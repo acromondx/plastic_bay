@@ -73,8 +73,10 @@ class AuthController extends StateNotifier<AuthState> {
     });
   }
 
-  void changePassword(
-      {required String newPassword, required String oldPassword}) async {
+  void changePassword({
+    required String newPassword,
+    required String oldPassword,
+  }) async {
     state = AuthState.loading;
     final reg = await _authAPI.changePassword(
       newPassword: newPassword,
