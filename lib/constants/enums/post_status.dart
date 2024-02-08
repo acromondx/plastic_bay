@@ -3,6 +3,7 @@ enum PostStatus{
   review,
   accepted,
   rejected,
+  pickedUp,
 }
 
 PostStatus fromStringToStatus(String text)=>switch(text){
@@ -10,5 +11,6 @@ PostStatus fromStringToStatus(String text)=>switch(text){
   'accepted'=> PostStatus.accepted,
   'review'=> PostStatus.review,
   'rejected'=> PostStatus.rejected,
+  'pickedUp'=>PostStatus.pickedUp,
   _=> PostStatus.pending,
 };

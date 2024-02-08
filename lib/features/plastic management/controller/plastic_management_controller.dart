@@ -9,20 +9,20 @@ class PlasticManagementController extends StateNotifier<bool> {
   })  : _plasticManagementAPI = plasticManagementAPI,
         super(false);
 
-  void createPost() async {
+  void createPost({required PlasticPost plasticPost}) async {
     final post =
         await _plasticManagementAPI.createPost(plasticPost: plasticPost);
     post.fold((l) => null, (r) => null);
   }
 
-  void updatePost() async {
+  void updatePost({required PlasticPost plasticPost}) async {
     final update =
         await _plasticManagementAPI.updatePost(plasticPost: plasticPost);
     update.fold((l) => null, (r) => null);
   }
 
-  void deletePost() async {
-    final delete = await _plasticManagementAPI.deletePost(postId: plasticPost);
+  void deletePost({required String postId}) async {
+    final delete = await _plasticManagementAPI.deletePost(postId: postId);
     delete.fold((l) => null, (r) => null);
   }
 
@@ -31,4 +31,6 @@ class PlasticManagementController extends StateNotifier<bool> {
 
   Future<List<PlasticPost>> myPost(String id) async =>
       await _plasticManagementAPI.getMyPost(contributorId: id);
+      
 }
+

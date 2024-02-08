@@ -12,6 +12,8 @@ class WasteContributor {
   final GeoPoint contributorLocation;
   final Timestamp joinedAt;
   final String pictureUrl;
+  final int totalPost;
+  final int rewardEarned;
   WasteContributor({
     required this.id,
     required this.name,
@@ -20,6 +22,8 @@ class WasteContributor {
     required this.contributorLocation,
     required this.joinedAt,
     required this.pictureUrl,
+    required this.totalPost,
+    required this.rewardEarned,
   });
 
   WasteContributor copyWith({
@@ -30,6 +34,8 @@ class WasteContributor {
     GeoPoint? contributorLocation,
     Timestamp? joinedAt,
     String? pictureUrl,
+    int? totalPost,
+    int? rewardEarned,
   }) {
     return WasteContributor(
       id: id ?? this.id,
@@ -39,6 +45,8 @@ class WasteContributor {
       contributorLocation: contributorLocation ?? this.contributorLocation,
       joinedAt: joinedAt ?? this.joinedAt,
       pictureUrl: pictureUrl ?? this.pictureUrl,
+      totalPost: totalPost ?? this.totalPost,
+      rewardEarned: rewardEarned ?? this.rewardEarned,
     );
   }
 
@@ -49,8 +57,10 @@ class WasteContributor {
       'email': email,
       'notificationToken': notificationToken,
       'contributorLocation': contributorLocation,
-      'joinedAt': joinedAt,
+      'joinedAt': joinedAt.millisecondsSinceEpoch,
       'pictureUrl': pictureUrl,
+      'totalPost': totalPost,
+      'rewardEarned': rewardEarned,
     };
   }
 
@@ -63,6 +73,8 @@ class WasteContributor {
       contributorLocation: (map['contributorLocation'] as GeoPoint),
       joinedAt: (map['joinedAt'] as Timestamp),
       pictureUrl: map['pictureUrl'] as String,
+      totalPost: map['totalPost'] as int,
+      rewardEarned: map['rewardEarned'] as int,
     );
   }
 
@@ -73,30 +85,35 @@ class WasteContributor {
 
   @override
   String toString() {
-    return 'WasteContributor(id: $id, name: $name, email: $email, notificationToken: $notificationToken, contributorLocation: $contributorLocation, joinedAt: $joinedAt, pictureUrl: $pictureUrl)';
+    return 'WasteContributor(id: $id, name: $name, email: $email, notificationToken: $notificationToken, contributorLocation: $contributorLocation, joinedAt: $joinedAt, pictureUrl: $pictureUrl, totalPost: $totalPost, rewardEarned: $rewardEarned)';
   }
 
   @override
   bool operator ==(covariant WasteContributor other) {
     if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.name == name &&
-        other.email == email &&
-        other.notificationToken == notificationToken &&
-        other.contributorLocation == contributorLocation &&
-        other.joinedAt == joinedAt &&
-        other.pictureUrl == pictureUrl;
+  
+    return 
+      other.id == id &&
+      other.name == name &&
+      other.email == email &&
+      other.notificationToken == notificationToken &&
+      other.contributorLocation == contributorLocation &&
+      other.joinedAt == joinedAt &&
+      other.pictureUrl == pictureUrl &&
+      other.totalPost == totalPost &&
+      other.rewardEarned == rewardEarned;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-        name.hashCode ^
-        email.hashCode ^
-        notificationToken.hashCode ^
-        contributorLocation.hashCode ^
-        joinedAt.hashCode ^
-        pictureUrl.hashCode;
+      name.hashCode ^
+      email.hashCode ^
+      notificationToken.hashCode ^
+      contributorLocation.hashCode ^
+      joinedAt.hashCode ^
+      pictureUrl.hashCode ^
+      totalPost.hashCode ^
+      rewardEarned.hashCode;
   }
 }
