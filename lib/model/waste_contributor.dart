@@ -10,10 +10,11 @@ class WasteContributor {
   final String email;
   final String notificationToken;
   final GeoPoint contributorLocation;
-  final Timestamp joinedAt;
+  final DateTime joinedAt;
   final String pictureUrl;
   final int totalPost;
-  final int rewardEarned;
+  final double earnedPoint;
+  final double pointsSpent;
   WasteContributor({
     required this.id,
     required this.name,
@@ -23,7 +24,8 @@ class WasteContributor {
     required this.joinedAt,
     required this.pictureUrl,
     required this.totalPost,
-    required this.rewardEarned,
+    required this.earnedPoint,
+    required this.pointsSpent,
   });
 
   WasteContributor copyWith({
@@ -32,10 +34,11 @@ class WasteContributor {
     String? email,
     String? notificationToken,
     GeoPoint? contributorLocation,
-    Timestamp? joinedAt,
+    DateTime? joinedAt,
     String? pictureUrl,
     int? totalPost,
-    int? rewardEarned,
+    double? earnedPoint,
+    double? pointsSpent,
   }) {
     return WasteContributor(
       id: id ?? this.id,
@@ -46,7 +49,8 @@ class WasteContributor {
       joinedAt: joinedAt ?? this.joinedAt,
       pictureUrl: pictureUrl ?? this.pictureUrl,
       totalPost: totalPost ?? this.totalPost,
-      rewardEarned: rewardEarned ?? this.rewardEarned,
+      earnedPoint: earnedPoint ?? this.earnedPoint,
+      pointsSpent: pointsSpent ?? this.pointsSpent,
     );
   }
 
@@ -60,7 +64,8 @@ class WasteContributor {
       'joinedAt': joinedAt.millisecondsSinceEpoch,
       'pictureUrl': pictureUrl,
       'totalPost': totalPost,
-      'rewardEarned': rewardEarned,
+      'earnedPoint': earnedPoint,
+      'pointsSpent': pointsSpent,
     };
   }
 
@@ -71,10 +76,11 @@ class WasteContributor {
       email: map['email'] as String,
       notificationToken: map['notificationToken'] as String,
       contributorLocation: (map['contributorLocation'] as GeoPoint),
-      joinedAt: (map['joinedAt'] as Timestamp),
+      joinedAt: DateTime.fromMillisecondsSinceEpoch(map['joinedAt'] as int),
       pictureUrl: map['pictureUrl'] as String,
       totalPost: map['totalPost'] as int,
-      rewardEarned: map['rewardEarned'] as int,
+      earnedPoint: map['earnedPoint'] as double,
+      pointsSpent: map['pointsSpent'] as double,
     );
   }
 
@@ -85,35 +91,36 @@ class WasteContributor {
 
   @override
   String toString() {
-    return 'WasteContributor(id: $id, name: $name, email: $email, notificationToken: $notificationToken, contributorLocation: $contributorLocation, joinedAt: $joinedAt, pictureUrl: $pictureUrl, totalPost: $totalPost, rewardEarned: $rewardEarned)';
+    return 'WasteContributor(id: $id, name: $name, email: $email, notificationToken: $notificationToken, contributorLocation: $contributorLocation, joinedAt: $joinedAt, pictureUrl: $pictureUrl, totalPost: $totalPost, earnedPoint: $earnedPoint, pointsSpent: $pointsSpent)';
   }
 
   @override
   bool operator ==(covariant WasteContributor other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.name == name &&
-      other.email == email &&
-      other.notificationToken == notificationToken &&
-      other.contributorLocation == contributorLocation &&
-      other.joinedAt == joinedAt &&
-      other.pictureUrl == pictureUrl &&
-      other.totalPost == totalPost &&
-      other.rewardEarned == rewardEarned;
+
+    return other.id == id &&
+        other.name == name &&
+        other.email == email &&
+        other.notificationToken == notificationToken &&
+        other.contributorLocation == contributorLocation &&
+        other.joinedAt == joinedAt &&
+        other.pictureUrl == pictureUrl &&
+        other.totalPost == totalPost &&
+        other.earnedPoint == earnedPoint &&
+        other.pointsSpent == pointsSpent;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      name.hashCode ^
-      email.hashCode ^
-      notificationToken.hashCode ^
-      contributorLocation.hashCode ^
-      joinedAt.hashCode ^
-      pictureUrl.hashCode ^
-      totalPost.hashCode ^
-      rewardEarned.hashCode;
+        name.hashCode ^
+        email.hashCode ^
+        notificationToken.hashCode ^
+        contributorLocation.hashCode ^
+        joinedAt.hashCode ^
+        pictureUrl.hashCode ^
+        totalPost.hashCode ^
+        earnedPoint.hashCode ^
+        pointsSpent.hashCode;
   }
 }

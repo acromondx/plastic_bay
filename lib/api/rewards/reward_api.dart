@@ -5,12 +5,7 @@ import 'package:plastic_bay/api/core/api_failure.dart';
 import 'package:plastic_bay/model/reward.dart';
 
 import '../core/either.dart';
-
-abstract class RewardInterface {
-  FutureVoid redeemReward({required Reward reward});
-
-  Future<List<Reward>> rewardHistory();
-}
+import 'reward_interface.dart';
 
 class RewardAPI implements RewardInterface {
   final FirebaseFirestore _firestore;
@@ -45,5 +40,11 @@ class RewardAPI implements RewardInterface {
         .collection('myRewards')
         .get();
     return rewards.docs.map((e) => Reward.fromMap(e.data())).toList();
+  }
+
+  @override
+  Future<List<Reward>> rewardCatalog() async {
+    final catalog = await _firestore.collection('reward_catalog').get();
+    return catalog.docs.map((e) => Reward.fromMap(e.data())).toList();
   }
 }

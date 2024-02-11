@@ -1,12 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:plastic_bay/api/authentication/auth_api.dart';
+import 'package:plastic_bay/api/user_management/user_api.dart';
 
 import 'package:plastic_bay/features/authentication/controler/auth_state.dart';
+import 'package:plastic_bay/model/waste_contributor.dart';
 
 class AuthController extends StateNotifier<AuthState> {
   final AuthAPI _authAPI;
-  AuthController({required AuthAPI authAI})
+  final FirebaseMessaging _firebaseMessaging;
+  final UserManagementAPI _userManagementAPI;
+  AuthController(
+      {required AuthAPI authAI,
+      required UserManagementAPI userManagementAPI,
+      required FirebaseMessaging firebaseMessaging})
       : _authAPI = authAI,
+        _userManagementAPI = userManagementAPI,
+        _firebaseMessaging = firebaseMessaging,
         super(AuthState.initial);
 
   void register({
@@ -18,9 +30,27 @@ class AuthController extends StateNotifier<AuthState> {
     final reg = await _authAPI.signUp(email: email, password: password);
     reg.fold((failure) {
       state = AuthState.error;
-    }, (userCredentials) {
-      ///Save user details in db after successful signUp and navigate home
-      state = AuthState.registered;
+    }, (userCredentials) async {
+      final geoPoint = await Geolocator.getCurrentPosition();
+      final notificationToken = await _firebaseMessaging.getToken();
+      WasteContributor contributor = WasteContributor(
+        id: userCredentials.user!.uid,
+        name: name,
+        email: email,
+        notificationToken: notificationToken!,
+        contributorLocation: GeoPoint(geoPoint.latitude, geoPoint.longitude),
+        joinedAt: DateTime.now(),
+        pictureUrl: '',
+        totalPost: 0,
+        earnedPoint: 0,
+        pointsSpent: 0,
+      );
+      final saveDetails = await _userManagementAPI.saveContributorCredentials(
+          wasteContributor: contributor);
+      saveDetails.fold((error) => null, (savedDetails) {
+        ///Save user details in db after successful signUp and navigate home
+        state = AuthState.registered;
+      });
     });
   }
 
@@ -32,7 +62,7 @@ class AuthController extends StateNotifier<AuthState> {
     final reg = await _authAPI.signIn(email: email, password: password);
     reg.fold((failure) {
       state = AuthState.error;
-    }, (userCredentials) {
+    }, (userCredentials) async {
       ///get user data from db after login and navigate to home
       state = AuthState.loggedIn;
     });
@@ -43,9 +73,27 @@ class AuthController extends StateNotifier<AuthState> {
     final reg = await _authAPI.googleSignIn();
     reg.fold((failure) {
       state = AuthState.error;
-    }, (userCredentials) {
-      ///Save user details in db after successful signIn
-      state = AuthState.googleSignIn;
+    }, (userCredentials) async {
+      final geoPoint = await Geolocator.getCurrentPosition();
+      final notificationToken = await _firebaseMessaging.getToken();
+      WasteContributor contributor = WasteContributor(
+        id: userCredentials.user!.uid,
+        name: userCredentials.user!.displayName!,
+        email: userCredentials.user!.email!,
+        notificationToken: notificationToken!,
+        contributorLocation: GeoPoint(geoPoint.latitude, geoPoint.longitude),
+        joinedAt: DateTime.now(),
+        pictureUrl: userCredentials.user!.photoURL!,
+        totalPost: 0,
+        earnedPoint: 0,
+        pointsSpent: 0,
+      );
+      final saveDetails = await _userManagementAPI.saveContributorCredentials(
+          wasteContributor: contributor);
+      saveDetails.fold((error) => null, (savedDetails) {
+        ///Save user details in db after successful signIn
+        state = AuthState.googleSignIn;
+      });
     });
   }
 
@@ -54,9 +102,28 @@ class AuthController extends StateNotifier<AuthState> {
     final reg = await _authAPI.googleSignIn();
     reg.fold((failure) {
       state = AuthState.error;
-    }, (userCredentials) {
-      ///Save user details in db after successful signIn
+    }, (userCredentials) async{
+      final geoPoint = await Geolocator.getCurrentPosition();
+      final notificationToken = await _firebaseMessaging.getToken();
+      WasteContributor contributor = WasteContributor(
+        id: userCredentials.user!.uid,
+        name: userCredentials.user!.displayName!,
+        email: userCredentials.user!.email!,
+        notificationToken: notificationToken!,
+        contributorLocation: GeoPoint(geoPoint.latitude, geoPoint.longitude),
+        joinedAt: DateTime.now(),
+        pictureUrl: userCredentials.user!.photoURL!,
+        totalPost: 0,
+        earnedPoint: 0,
+        pointsSpent: 0,
+      );
+      final saveDetails = await _userManagementAPI.saveContributorCredentials(
+          wasteContributor: contributor);
+      saveDetails.fold((error) => null, (savedDetails) {
+        ///Save user details in db after successful signIn
       state = AuthState.appleSignIn;
+      });
+ 
     });
   }
 

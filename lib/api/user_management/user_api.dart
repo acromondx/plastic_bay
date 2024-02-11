@@ -4,17 +4,7 @@ import 'package:plastic_bay/api/core/api_failure.dart';
 import 'package:plastic_bay/api/core/either.dart';
 import 'package:plastic_bay/model/waste_contributor.dart';
 
-abstract class UserManagementInterface {
-  FutureVoid saveContributorCredentials({
-    required WasteContributor wasteContributor,
-  });
-  Future<WasteContributor> contributorDetails({
-    required String wasteContributorId,
-  });
-  FutureVoid updateContributorDetails({
-    required String wasteContributorId,
-  });
-}
+import 'user_interface.dart';
 
 class UserManagementAPI implements UserManagementInterface {
   final FirebaseFirestore _firestore;
@@ -37,8 +27,9 @@ class UserManagementAPI implements UserManagementInterface {
   }
 
   @override
-  Future<WasteContributor> contributorDetails(
-      {required String wasteContributorId}) async {
+  Future<WasteContributor> contributorDetails({
+    required String wasteContributorId,
+  }) async {
     final details = await _firestore
         .collection('wasteContributors')
         .doc(wasteContributorId)
@@ -47,8 +38,9 @@ class UserManagementAPI implements UserManagementInterface {
   }
 
   @override
-  FutureVoid updateContributorDetails(
-      {required String wasteContributorId}) async {
+  FutureVoid updateContributorDetails({
+    required String wasteContributorId,
+  }) async {
     try {
       final update = await _firestore
           .collection('wasteContributors')
@@ -58,5 +50,48 @@ class UserManagementAPI implements UserManagementInterface {
     } catch (error, stackTrace) {
       return left(Failure(error, stackTrace));
     }
+  }
+
+  @override
+  FutureVoid spendPoint({
+    required String wasteContributorId,
+    required double totalSpending,
+  }) async {
+    try {
+      final details = await _firestore
+          .collection('wasteContributors')
+          .doc(wasteContributorId)
+          .get();
+      WasteContributor wasteContributor =
+          WasteContributor.fromMap(details.data()!);
+      wasteContributor.copyWith(
+          earnedPoint: wasteContributor.earnedPoint - totalSpending,
+          pointsSpent: wasteContributor.pointsSpent + totalSpending);
+      await _firestore
+          .collection('wasteContributors')
+          .doc(wasteContributorId)
+          .update({
+        'earnedPoint': wasteContributor.earnedPoint,
+        'pointsSpent': wasteContributor.pointsSpent,
+      });
+      return right(null);
+    } catch (error, stackTrace) {
+      return left(Failure(error, stackTrace));
+    }
+  }
+
+  @override
+  Future<List<WasteContributor>> topContributors() async {
+    final contributors = await _firestore
+        .collection('wasteContributors')
+        .where(
+          'totalPost',
+          isGreaterThanOrEqualTo: 10,
+        )
+        .orderBy('totalPost', descending: true)
+        .get();
+    return contributors.docs
+        .map((e) => WasteContributor.fromMap(e.data()))
+        .toList();
   }
 }

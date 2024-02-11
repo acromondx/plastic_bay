@@ -1,23 +1,50 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plastic_bay/api/authentication/auth_api.dart';
 import 'package:plastic_bay/api/plastic_mangement/pastic_management_api.dart';
-import 'package:plastic_bay/model/plastic_post.dart';
+import 'package:plastic_bay/utils/enums/plastic_type.dart';
+import 'package:plastic_bay/utils/enums/post_status.dart';
+import 'package:plastic_bay/model/plastic.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:uuid/uuid.dart';
 
 class PlasticManagementController extends StateNotifier<bool> {
   final PlasticManagementAPI _plasticManagementAPI;
+  final AuthAPI _authAPI;
   PlasticManagementController({
     required PlasticManagementAPI plasticManagementAPI,
+    required AuthAPI authAPI,
   })  : _plasticManagementAPI = plasticManagementAPI,
+        _authAPI = authAPI,
         super(false);
 
-  void createPost({required PlasticPost plasticPost}) async {
-    final post =
-        await _plasticManagementAPI.createPost(plasticPost: plasticPost);
+  void createPost({
+    required String description,
+    required DateTime pickUpTime,
+    required PlasticType plasticType,
+    required double quantity,
+  }) async {
+    final plasticId = const Uuid().v4();
+    final geoPoint = await Geolocator.getCurrentPosition();
+    Plastic plastic = Plastic(
+      postedAt: DateTime.now(),
+      pickUpTime: pickUpTime,
+      location: GeoPoint(geoPoint.latitude, geoPoint.longitude),
+      status: PlasticStatus.pending,
+      plasticType: plasticType,
+      contributorId: _authAPI.currentUserId,
+      plasticId: plasticId,
+      description: description,
+      quantity: quantity,
+    );
+
+    final post = await _plasticManagementAPI.createPost(plastic: plastic);
     post.fold((l) => null, (r) => null);
   }
 
-  void updatePost({required PlasticPost plasticPost}) async {
+  void updatePost({required Plastic plastic}) async {
     final update =
-        await _plasticManagementAPI.updatePost(plasticPost: plasticPost);
+        await _plasticManagementAPI.updatePost(plastic: plastic);
     update.fold((l) => null, (r) => null);
   }
 
@@ -26,11 +53,9 @@ class PlasticManagementController extends StateNotifier<bool> {
     delete.fold((l) => null, (r) => null);
   }
 
-  Future<List<PlasticPost>> get allPost async =>
+  Future<List<Plastic >> get allPost async =>
       await _plasticManagementAPI.getAllPost();
 
-  Future<List<PlasticPost>> myPost(String id) async =>
-      await _plasticManagementAPI.getMyPost(contributorId: id);
-      
+  Future<List<Plastic >> myPost() async =>
+      await _plasticManagementAPI.getMyPost(contributorId: _authAPI.currentUserId);
 }
-

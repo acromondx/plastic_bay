@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39834759866",
+    "project_id": "plasticbay-f96ba",
+    "storage_bucket": "plasticbay-f96ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39834759866:android:8eb9b5d194cb623baa0883",
+        "android_client_info": {
+          "package_name": "com.example.plastic_bay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwRrU_KsacmmS8KGploEKbxXjWQFcuYQQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

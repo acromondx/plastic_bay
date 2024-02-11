@@ -3,7 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:plastic_bay/api/core/api_failure.dart';
 import 'package:plastic_bay/api/core/either.dart';
 import 'package:plastic_bay/api/plastic_mangement/plastic_management_interface.dart';
-import 'package:plastic_bay/model/plastic_post.dart';
+import 'package:plastic_bay/model/plastic.dart';
 
 class PlasticManagementAPI implements PlasticManagementInterface {
   final FirebaseFirestore _firestore;
@@ -11,12 +11,12 @@ class PlasticManagementAPI implements PlasticManagementInterface {
       : _firestore = firestore;
 
   @override
-  FutureVoid createPost({required PlasticPost plasticPost}) async {
+  FutureVoid createPost({required Plastic plastic}) async {
     try {
       final post = _firestore
-          .collection('post')
-          .doc(plasticPost.postId)
-          .set(plasticPost.toMap());
+          .collection('plastic_post')
+          .doc(plastic.plasticId)
+          .set(plastic.toMap());
       return right(post);
     } catch (error, stackTrace) {
       return left(Failure(error, stackTrace));
@@ -28,7 +28,7 @@ class PlasticManagementAPI implements PlasticManagementInterface {
     required String postId,
   }) async {
     try {
-      final delete = _firestore.collection('post').doc(postId).delete();
+      final delete = _firestore.collection('plastic_post').doc(postId).delete();
       return right(delete);
     } catch (error, stackTrace) {
       return left(Failure(error, stackTrace));
@@ -36,34 +36,34 @@ class PlasticManagementAPI implements PlasticManagementInterface {
   }
 
   @override
-  Future<List<PlasticPost>> getAllPost() async {
+  Future<List<Plastic>> getAllPost() async {
     final posts = await _firestore
-        .collection('post')
+        .collection('plastic_post')
         .orderBy('timestamp', descending: true)
         .get();
-    return posts.docs.map((e) => PlasticPost.fromMap(e.data())).toList();
+    return posts.docs.map((e) => Plastic.fromMap(e.data())).toList();
   }
 
   @override
-  Future<List<PlasticPost>> getMyPost({
+  Future<List<Plastic>> getMyPost({
     required String contributorId,
   }) async {
     final posts = await _firestore
-        .collection('post')
+        .collection('plastic_post')
         .where('contributorId', isEqualTo: contributorId)
         .get();
-    return posts.docs.map((e) => PlasticPost.fromMap(e.data())).toList();
+    return posts.docs.map((e) => Plastic.fromMap(e.data())).toList();
   }
 
   @override
   FutureVoid updatePost({
-    required PlasticPost plasticPost,
+    required Plastic plastic,
   }) async {
     try {
       final delete = _firestore
           .collection('post')
-          .doc(plasticPost.postId)
-          .update(plasticPost.toMap());
+          .doc(plastic.plasticId)
+          .update(plastic.toMap());
       return right(delete);
     } catch (error, stackTrace) {
       return left(Failure(error, stackTrace));

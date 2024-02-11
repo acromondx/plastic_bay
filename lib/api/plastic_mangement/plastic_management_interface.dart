@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plastic_bay/api/core/either.dart';
-import 'package:plastic_bay/constants/enums/post_status.dart';
-import 'package:plastic_bay/model/plastic_post.dart';
+import 'package:plastic_bay/utils/enums/post_status.dart';
+import 'package:plastic_bay/model/plastic.dart';
 
 abstract class PlasticManagementInterface {
-  FutureVoid createPost({required PlasticPost plasticPost});
+  FutureVoid createPost({required Plastic plastic});
   FutureVoid deletePost({required String postId});
-  FutureVoid updatePost({required PlasticPost plasticPost});
-  Future<List<PlasticPost>> getAllPost();
-  Future<List<PlasticPost>> getMyPost({required String contributorId});
+  FutureVoid updatePost({required Plastic plastic});
+  Future<List<Plastic>> getAllPost();
+  Future<List<Plastic>> getMyPost({required String contributorId});
 
 }
