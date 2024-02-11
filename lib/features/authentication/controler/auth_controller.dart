@@ -3,10 +3,20 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:plastic_bay/api/authentication/auth_api.dart';
+import 'package:plastic_bay/api/providers.dart';
 import 'package:plastic_bay/api/user_management/user_api.dart';
 
 import 'package:plastic_bay/features/authentication/controler/auth_state.dart';
 import 'package:plastic_bay/model/waste_contributor.dart';
+
+final authControllerProvider =
+    StateNotifierProvider<AuthController, AuthState>((ref) {
+  return AuthController(
+    authAI: ref.watch(authApiProvider),
+    userManagementAPI: ref.watch(userManagementApiProvider),
+    firebaseMessaging: ref.watch(firebaseMassagingAPI),
+  );
+});
 
 class AuthController extends StateNotifier<AuthState> {
   final AuthAPI _authAPI;
@@ -102,7 +112,7 @@ class AuthController extends StateNotifier<AuthState> {
     final reg = await _authAPI.googleSignIn();
     reg.fold((failure) {
       state = AuthState.error;
-    }, (userCredentials) async{
+    }, (userCredentials) async {
       final geoPoint = await Geolocator.getCurrentPosition();
       final notificationToken = await _firebaseMessaging.getToken();
       WasteContributor contributor = WasteContributor(
@@ -121,9 +131,8 @@ class AuthController extends StateNotifier<AuthState> {
           wasteContributor: contributor);
       saveDetails.fold((error) => null, (savedDetails) {
         ///Save user details in db after successful signIn
-      state = AuthState.appleSignIn;
+        state = AuthState.appleSignIn;
       });
- 
     });
   }
 

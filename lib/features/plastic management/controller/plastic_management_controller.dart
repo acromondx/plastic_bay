@@ -2,11 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plastic_bay/api/authentication/auth_api.dart';
 import 'package:plastic_bay/api/plastic_mangement/pastic_management_api.dart';
+import 'package:plastic_bay/api/providers.dart';
 import 'package:plastic_bay/utils/enums/plastic_type.dart';
 import 'package:plastic_bay/utils/enums/post_status.dart';
 import 'package:plastic_bay/model/plastic.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:uuid/uuid.dart';
+
+final plasticManagementControllerProvider =
+    StateNotifierProvider<PlasticManagementController, bool>((ref) {
+  return PlasticManagementController(
+    plasticManagementAPI: ref.watch(plasticManagementApiProvider),
+    authAPI: ref.watch(authApiProvider),
+  );
+});
 
 class PlasticManagementController extends StateNotifier<bool> {
   final PlasticManagementAPI _plasticManagementAPI;
@@ -43,8 +52,7 @@ class PlasticManagementController extends StateNotifier<bool> {
   }
 
   void updatePost({required Plastic plastic}) async {
-    final update =
-        await _plasticManagementAPI.updatePost(plastic: plastic);
+    final update = await _plasticManagementAPI.updatePost(plastic: plastic);
     update.fold((l) => null, (r) => null);
   }
 
@@ -53,9 +61,9 @@ class PlasticManagementController extends StateNotifier<bool> {
     delete.fold((l) => null, (r) => null);
   }
 
-  Future<List<Plastic >> get allPost async =>
+  Future<List<Plastic>> get allPost async =>
       await _plasticManagementAPI.getAllPost();
 
-  Future<List<Plastic >> myPost() async =>
-      await _plasticManagementAPI.getMyPost(contributorId: _authAPI.currentUserId);
+  Future<List<Plastic>> myPost() async => await _plasticManagementAPI.getMyPost(
+      contributorId: _authAPI.currentUserId);
 }

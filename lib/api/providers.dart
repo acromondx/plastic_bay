@@ -1,20 +1,32 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:plastic_bay/api/authentication/auth_api.dart';
+import 'package:plastic_bay/api/plastic_mangement/pastic_management_api.dart';
+import 'package:plastic_bay/api/user_management/user_api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-part 'providers.g.dart';
 
-@riverpod
-FirebaseAuth firebaseAuthProvider(FirebaseAuthProviderRef ref) {
-  return FirebaseAuth.instance;
-}
+final firebaseAuthProvider = Provider((ref) {
+  return FirebaseAuth.instance ;
+});
+final firebaseFirestoreProvider = Provider((ref) {
+  return FirebaseFirestore.instance ;
+});
 
-@riverpod
-FirebaseFirestore firebaseFirestoreProvider(FirebaseFirestoreProviderRef ref) {
-  return FirebaseFirestore.instance;
-}
+final firebaseMassagingAPI = Provider((ref) {
+  return FirebaseMessaging.instance ;
+});
 
-@riverpod
-AuthAPI authApiProvider(AuthApiProviderRef ref) {
-  return AuthAPI(firebaseAuth: ref.watch(firebaseAuthProviderProvider));
-}
+final authApiProvider = Provider((ref) {
+  return AuthAPI(firebaseAuth: ref.watch(firebaseAuthProvider)) ;
+});
+
+
+final userManagementApiProvider = Provider((ref) {
+  return UserManagementAPI(firestore: ref.watch(firebaseFirestoreProvider)) ;
+});
+
+final plasticManagementApiProvider = Provider((ref) {
+  return PlasticManagementAPI(firestore: ref.watch(firebaseFirestoreProvider)) ;
+});
+
