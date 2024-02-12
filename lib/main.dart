@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plastic_bay/test_screens/all_post.dart';
 import 'features/authentication/screen/register.dart';
 import 'firebase_options.dart';
+import 'test_screens/reward_catalog.dart';
 import 'test_screens/top_contributors.dart';
 
 Future<void> main() async {
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const TopContributors(),
+      home: const RewardCatalog(),
     );
   }
 }
