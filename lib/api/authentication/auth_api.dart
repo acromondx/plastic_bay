@@ -62,7 +62,8 @@ class AuthAPI implements AuthInterface {
       return left(Failure(error.message!, stackTrace));
     }
   }
-String  get currentUserId => _firebaseAuth.currentUser!.uid;
+User  get currentUser => _firebaseAuth.currentUser!;
+Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
   @override
   FutureVoid deleteAccount({
     required String password,

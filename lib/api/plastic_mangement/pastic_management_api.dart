@@ -39,7 +39,7 @@ class PlasticManagementAPI implements PlasticManagementInterface {
   Future<List<Plastic>> getAllPost() async {
     final posts = await _firestore
         .collection('plastic_post')
-        .orderBy('timestamp', descending: true)
+        .orderBy('postedAt', descending: true)
         .get();
     return posts.docs.map((e) => Plastic.fromMap(e.data())).toList();
   }

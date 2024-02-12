@@ -40,12 +40,13 @@ class UserManagementAPI implements UserManagementInterface {
   @override
   FutureVoid updateContributorDetails({
     required String wasteContributorId,
+    required Map<String, dynamic> details,
   }) async {
     try {
       final update = await _firestore
           .collection('wasteContributors')
           .doc(wasteContributorId)
-          .update({});
+          .update(details);
       return right(update);
     } catch (error, stackTrace) {
       return left(Failure(error, stackTrace));
@@ -58,21 +59,12 @@ class UserManagementAPI implements UserManagementInterface {
     required double totalSpending,
   }) async {
     try {
-      final details = await _firestore
-          .collection('wasteContributors')
-          .doc(wasteContributorId)
-          .get();
-      WasteContributor wasteContributor =
-          WasteContributor.fromMap(details.data()!);
-      wasteContributor.copyWith(
-          earnedPoint: wasteContributor.earnedPoint - totalSpending,
-          pointsSpent: wasteContributor.pointsSpent + totalSpending);
       await _firestore
           .collection('wasteContributors')
           .doc(wasteContributorId)
           .update({
-        'earnedPoint': wasteContributor.earnedPoint,
-        'pointsSpent': wasteContributor.pointsSpent,
+        'earnedPoint': FieldValue.increment(-totalSpending),
+        'pointsSpent': FieldValue.increment(totalSpending),
       });
       return right(null);
     } catch (error, stackTrace) {
@@ -86,7 +78,7 @@ class UserManagementAPI implements UserManagementInterface {
         .collection('wasteContributors')
         .where(
           'totalPost',
-          isGreaterThanOrEqualTo: 10,
+          isGreaterThanOrEqualTo: 0,
         )
         .orderBy('totalPost', descending: true)
         .get();

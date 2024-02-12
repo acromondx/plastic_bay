@@ -17,6 +17,7 @@ class Plastic {
   final String plasticId;
   final String description;
   final double quantity;
+  final String imageUrl;
   Plastic({
     required this.postedAt,
     required this.pickUpTime,
@@ -27,6 +28,7 @@ class Plastic {
     required this.plasticId,
     required this.description,
     required this.quantity,
+    required this.imageUrl,
   });
 
   Plastic copyWith({
@@ -39,6 +41,7 @@ class Plastic {
     String? plasticId,
     String? description,
     double? quantity,
+    String? imageUrl,
   }) {
     return Plastic(
       postedAt: postedAt ?? this.postedAt,
@@ -50,6 +53,7 @@ class Plastic {
       plasticId: plasticId ?? this.plasticId,
       description: description ?? this.description,
       quantity: quantity ?? this.quantity,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 
@@ -64,12 +68,13 @@ class Plastic {
       'plasticId': plasticId,
       'description': description,
       'quantity': quantity,
+      'imageUrl': imageUrl,
     };
   }
 
   factory Plastic.fromMap(Map<String, dynamic> map) {
     return Plastic(
-      postedAt: DateTime.fromMillisecondsSinceEpoch(map['postedAt'] as int),
+        postedAt: DateTime.fromMillisecondsSinceEpoch(map['postedAt'] as int),
       pickUpTime: DateTime.fromMillisecondsSinceEpoch(map['pickUpTime'] as int),
       location: (map['location'] as GeoPoint),
       status: plasticFromStringToStatus(map['status']),
@@ -78,6 +83,7 @@ class Plastic {
       plasticId: map['plasticId'] as String,
       description: map['description'] as String,
       quantity: map['quantity'] as double,
+      imageUrl: map['imageUrl'] as String,
     );
   }
 
@@ -88,34 +94,37 @@ class Plastic {
 
   @override
   String toString() {
-    return 'Plastic(postedAt: $postedAt, pickUpTime: $pickUpTime, location: $location, status: $status, plasticType: $plasticType, contributorId: $contributorId, plasticId: $plasticId, description: $description, quantity: $quantity)';
+    return 'Plastic(postedAt: $postedAt, pickUpTime: $pickUpTime, location: $location, status: $status, plasticType: $plasticType, contributorId: $contributorId, plasticId: $plasticId, description: $description, quantity: $quantity, imageUrl: $imageUrl)';
   }
 
   @override
   bool operator ==(covariant Plastic other) {
     if (identical(this, other)) return true;
-
-    return other.postedAt == postedAt &&
-        other.pickUpTime == pickUpTime &&
-        other.location == location &&
-        other.status == status &&
-        other.plasticType == plasticType &&
-        other.contributorId == contributorId &&
-        other.plasticId == plasticId &&
-        other.description == description &&
-        other.quantity == quantity;
+  
+    return 
+      other.postedAt == postedAt &&
+      other.pickUpTime == pickUpTime &&
+      other.location == location &&
+      other.status == status &&
+      other.plasticType == plasticType &&
+      other.contributorId == contributorId &&
+      other.plasticId == plasticId &&
+      other.description == description &&
+      other.quantity == quantity &&
+      other.imageUrl == imageUrl;
   }
 
   @override
   int get hashCode {
     return postedAt.hashCode ^
-        pickUpTime.hashCode ^
-        location.hashCode ^
-        status.hashCode ^
-        plasticType.hashCode ^
-        contributorId.hashCode ^
-        plasticId.hashCode ^
-        description.hashCode ^
-        quantity.hashCode;
+      pickUpTime.hashCode ^
+      location.hashCode ^
+      status.hashCode ^
+      plasticType.hashCode ^
+      contributorId.hashCode ^
+      plasticId.hashCode ^
+      description.hashCode ^
+      quantity.hashCode ^
+      imageUrl.hashCode;
   }
 }

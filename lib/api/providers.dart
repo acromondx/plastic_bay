@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:plastic_bay/api/authentication/auth_api.dart';
 import 'package:plastic_bay/api/plastic_mangement/pastic_management_api.dart';
+import 'package:plastic_bay/api/rewards/reward_api.dart';
 import 'package:plastic_bay/api/user_management/user_api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -29,4 +30,10 @@ final userManagementApiProvider = Provider((ref) {
 final plasticManagementApiProvider = Provider((ref) {
   return PlasticManagementAPI(firestore: ref.watch(firebaseFirestoreProvider)) ;
 });
+
+
+final rewardApiProvider = Provider((ref) {
+  return RewardAPI(firestore: ref.watch(firebaseFirestoreProvider), auth:ref.watch(firebaseAuthProvider) ) ;
+});
+
 

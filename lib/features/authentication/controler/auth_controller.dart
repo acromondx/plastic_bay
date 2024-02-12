@@ -39,9 +39,11 @@ class AuthController extends StateNotifier<AuthState> {
     state = AuthState.loading;
     final reg = await _authAPI.signUp(email: email, password: password);
     reg.fold((failure) {
+      print(failure.error);
       state = AuthState.error;
     }, (userCredentials) async {
       final geoPoint = await Geolocator.getCurrentPosition();
+
       final notificationToken = await _firebaseMessaging.getToken();
       WasteContributor contributor = WasteContributor(
         id: userCredentials.user!.uid,
@@ -57,7 +59,7 @@ class AuthController extends StateNotifier<AuthState> {
       );
       final saveDetails = await _userManagementAPI.saveContributorCredentials(
           wasteContributor: contributor);
-      saveDetails.fold((error) => null, (savedDetails) {
+      saveDetails.fold((error) => print(error.error), (savedDetails) {
         ///Save user details in db after successful signUp and navigate home
         state = AuthState.registered;
       });

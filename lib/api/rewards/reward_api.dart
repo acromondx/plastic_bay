@@ -47,4 +47,17 @@ class RewardAPI implements RewardInterface {
     final catalog = await _firestore.collection('reward_catalog').get();
     return catalog.docs.map((e) => Reward.fromMap(e.data())).toList();
   }
+
+  @override
+  FutureVoid addRewardItem({required Reward reward}) async {
+    try {
+      final add = await _firestore
+          .collection('reward_catalog')
+          .doc(reward.rewardId)
+          .set(reward.toMap());
+      return right(add);
+    } catch (error, stackTrace) {
+      return left(Failure(error, stackTrace));
+    }
+  }
 }

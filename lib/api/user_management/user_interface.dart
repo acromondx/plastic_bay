@@ -12,6 +12,7 @@ abstract class UserManagementInterface {
   });
   FutureVoid updateContributorDetails({
     required String wasteContributorId,
+     required Map<String, dynamic> details,
   });
   FutureVoid spendPoint({
     required String wasteContributorId,

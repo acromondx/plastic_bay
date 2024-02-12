@@ -9,6 +9,7 @@ class Reward {
  final double value;
  final int quantity;
  final String category;
+ final String imageUrl;
   Reward({
     required this.rewardId,
     required this.name,
@@ -16,6 +17,7 @@ class Reward {
     required this.value,
     required this.quantity,
     required this.category,
+    required this.imageUrl,
   });
  
 
@@ -26,6 +28,7 @@ class Reward {
     double? value,
     int? quantity,
     String? category,
+    String? imageUrl,
   }) {
     return Reward(
       rewardId: rewardId ?? this.rewardId,
@@ -34,6 +37,7 @@ class Reward {
       value: value ?? this.value,
       quantity: quantity ?? this.quantity,
       category: category ?? this.category,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 
@@ -45,6 +49,7 @@ class Reward {
       'value': value,
       'quantity': quantity,
       'category': category,
+      'imageUrl': imageUrl,
     };
   }
 
@@ -56,6 +61,7 @@ class Reward {
       value: map['value'] as double,
       quantity: map['quantity'] as int,
       category: map['category'] as String,
+      imageUrl: map['imageUrl'] as String,
     );
   }
 
@@ -65,7 +71,7 @@ class Reward {
 
   @override
   String toString() {
-    return 'Reward(rewardId: $rewardId, name: $name, description: $description, value: $value, quantity: $quantity, category: $category)';
+    return 'Reward(rewardId: $rewardId, name: $name, description: $description, value: $value, quantity: $quantity, category: $category, imageUrl: $imageUrl)';
   }
 
   @override
@@ -78,7 +84,8 @@ class Reward {
       other.description == description &&
       other.value == value &&
       other.quantity == quantity &&
-      other.category == category;
+      other.category == category &&
+      other.imageUrl == imageUrl;
   }
 
   @override
@@ -88,6 +95,7 @@ class Reward {
       description.hashCode ^
       value.hashCode ^
       quantity.hashCode ^
-      category.hashCode;
+      category.hashCode ^
+      imageUrl.hashCode;
   }
 }
