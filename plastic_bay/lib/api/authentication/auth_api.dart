@@ -140,7 +140,7 @@ Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
   }
 
   @override
-  FutureEither<UserCredential> signUp({
+  FutureEither<UserCredential> emailAndPasswordSignUp({
     required String email,
     required String password,
   }) async {

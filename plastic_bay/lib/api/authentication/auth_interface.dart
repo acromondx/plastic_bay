@@ -4,7 +4,7 @@ import 'package:plastic_bay/api/core/either.dart';
 
 ///Interface for authentication
 abstract class  AuthInterface{
-   FutureEither<UserCredential> signUp({required String email, required String password});
+   FutureEither<UserCredential> emailAndPasswordSignUp({required String email, required String password});
    FutureEither<UserCredential> signIn({required String email,required String password});
    FutureEither<UserCredential> googleSignIn();
    FutureEither<UserCredential> appleSignIn();

@@ -37,7 +37,7 @@ class AuthController extends StateNotifier<AuthState> {
     required String name,
   }) async {
     state = AuthState.loading;
-    final reg = await _authAPI.signUp(email: email, password: password);
+    final reg = await _authAPI.emailAndPasswordSignUp(email: email, password: password);
     reg.fold((failure) {
       print(failure.error);
       state = AuthState.error;
