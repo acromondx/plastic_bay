@@ -30,7 +30,8 @@ class AllPost extends ConsumerWidget {
                           title: Text(posts[index].description),
                           subtitle: Text(posts[index].plasticType.toString()),
                         ),
-                        Image.network(posts[index].imageUrl),
+                        
+                       // Image.network(posts[index].imageUrl[]),
                       ],
                     );
                   },

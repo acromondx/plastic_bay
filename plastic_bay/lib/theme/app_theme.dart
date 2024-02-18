@@ -39,6 +39,7 @@ class AppTheme {
   );
   static ThemeData light() {
     return ThemeData(
+      canvasColor: AppColors.darkGreyColor,
       colorScheme: ColorScheme(
           brightness: Brightness.light,
           primary: AppColors.primaryColor,
@@ -80,7 +81,52 @@ class AppTheme {
           shadowColor: AppColors.primaryColor,
           surfaceTintColor: AppColors.primaryColor,
           rangePickerBackgroundColor: Colors.red),
-
+      timePickerTheme: TimePickerThemeData(
+        backgroundColor: Colors.white,
+        hourMinuteColor: AppColors.secondaryColor,
+        dayPeriodColor: AppColors.secondaryColor,
+        hourMinuteTextStyle: const TextStyle(
+          fontWeight: FontWeight.w400,
+          fontFamily: 'Nunito',
+          fontSize: 18,
+          color: Colors.black,
+        ),
+        dayPeriodTextStyle: const TextStyle(
+          fontWeight: FontWeight.w400,
+          fontFamily: 'Nunito',
+          fontSize: 18,
+          color: Colors.black,
+        ),
+        dialHandColor: Colors.amber,
+        dialBackgroundColor: AppColors.secondaryColor,
+        dayPeriodTextColor: AppColors.secondaryColor,
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontFamily: 'Nunito',
+            fontSize: 20,
+            color: Colors.black,
+          ),
+        ),
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        labelStyle: TextStyle(
+          fontWeight: FontWeight.w700,
+          fontFamily: 'Nunito',
+          fontSize: 20,
+          color: Colors.black,
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.primaryColor,
+          textStyle: const TextStyle(
+              fontFamily: 'Nunito',
+              fontSize: 16,
+              color: AppColors.primaryColor,
+              fontWeight: FontWeight.normal),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
             shape:
@@ -122,6 +168,7 @@ class AppTheme {
         }),
       ),
       chipTheme: const ChipThemeData(elevation: 0),
+
       radioTheme: RadioThemeData(
         fillColor: MaterialStateProperty.resolveWith<Color?>(
             (Set<MaterialState> states) {

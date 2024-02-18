@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:plastic_bay/api/authentication/auth_api.dart';
 import 'package:plastic_bay/api/plastic_mangement/pastic_management_api.dart';
 import 'package:plastic_bay/api/providers.dart';
@@ -10,6 +12,7 @@ import 'package:plastic_bay/utils/enums/plastic_type.dart';
 import 'package:plastic_bay/utils/enums/post_status.dart';
 import 'package:plastic_bay/model/plastic.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:plastic_bay/utils/toast_message.dart';
 import 'package:uuid/uuid.dart';
 
 final plasticManagementControllerProvider =
@@ -48,17 +51,28 @@ class PlasticManagementController extends StateNotifier<bool> {
 
   void createPost({
     required String description,
-    required DateTime pickUpTime,
     required PlasticType plasticType,
     required double quantity,
-    required String imagePath
+    required List<String> imagePath,
+    required String pickUpDate,
+    required String pickUpTime,
+    required BuildContext context,
   }) async {
+    state = true;
+    List<String> imageUrls = [];
     final plasticId = const Uuid().v4();
-     final imageUrl = await _storageAPI.uploadPostImage(
-        imagePath: imagePath, postId: plasticId);
+    for (final path in imagePath) {
+      final pictureId = const Uuid().v4();
+      final imageUrl = await _storageAPI.uploadPostImage(
+        imagePath: path,
+        postId: pictureId,
+      );
+      imageUrls.add(imageUrl);
+    }
     final geoPoint = await Geolocator.getCurrentPosition();
     Plastic plastic = Plastic(
       postedAt: DateTime.now(),
+      pickUpDate: pickUpDate,
       pickUpTime: pickUpTime,
       location: GeoPoint(geoPoint.latitude, geoPoint.longitude),
       status: PlasticStatus.pending,
@@ -67,13 +81,16 @@ class PlasticManagementController extends StateNotifier<bool> {
       plasticId: plasticId,
       description: description,
       quantity: quantity,
-      imageUrl:imageUrl,
+      imageUrl: imageUrls,
     );
     final post = await _plasticManagementAPI.createPost(plastic: plastic);
-    post.fold((l) => null, (r) async {
+    post.fold((failure) => showToastMessage(failure.error.toString(), context),
+        (r) async {
       await _userManagementAPI.updateContributorDetails(
           wasteContributorId: _authAPI.currentUser.uid,
           details: {'totalPost': FieldValue.increment(1)});
+      state = false;
+      context.pop();
     });
   }
 

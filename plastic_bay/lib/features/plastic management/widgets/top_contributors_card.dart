@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plastic_bay/model/waste_contributor.dart';
+import 'package:plastic_bay/theme/app_color.dart';
 
 class ContributorsCard extends StatelessWidget {
   final WasteContributor contributor;
@@ -7,6 +8,7 @@ class ContributorsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -16,13 +18,22 @@ class ContributorsCard extends StatelessWidget {
           ),
           child: Column(
             children: [
-           
               ListTile(
                 leading: CircleAvatar(
                   backgroundImage: NetworkImage(contributor.pictureUrl),
                 ),
-                title: Text(contributor.name),
-                subtitle: Text(contributor.earnedPoint.toString()),
+                title: Text(
+                  contributor.name,
+                  style: textTheme.bodyMedium,
+                ),
+                trailing: Text(
+                  contributor.earnedPoint.toString(),
+                  style: textTheme.titleMedium!.copyWith(
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ],
           )),

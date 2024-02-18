@@ -9,12 +9,20 @@ enum PlasticType {
   const PlasticType(this.name);
 }
 
+List<PlasticType> plasticType = [
+  PlasticType.pet,
+  PlasticType.pvc,
+  PlasticType.ldpe,
+  PlasticType.pp,
+  PlasticType.ps,
+  PlasticType.pet,
+];
 
-PlasticType plasticFromStringToType(String text)=>switch(text){
-  'Polyethylene Terephthalate'=> PlasticType.pet,
-  'Polyvinyl Chloride'=> PlasticType.pvc,
-  'Low-Density Polyethylene'=> PlasticType.ldpe,
-  'Polypropylene'=> PlasticType.pp,
-  'Polystyrene'=>PlasticType.ps,
-  _=> PlasticType.pet,
-};
+PlasticType plasticFromStringToType(String text) => switch (text) {
+      'Polyethylene Terephthalate' => PlasticType.pet,
+      'Polyvinyl Chloride' => PlasticType.pvc,
+      'Low-Density Polyethylene' => PlasticType.ldpe,
+      'Polypropylene' => PlasticType.pp,
+      'Polystyrene' => PlasticType.ps,
+      _ => PlasticType.pet,
+    };
