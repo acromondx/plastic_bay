@@ -1,47 +1,60 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:plastic_bay/api/authentication/auth_api.dart';
 import 'package:plastic_bay/api/providers.dart';
+import 'package:plastic_bay/api/storage_bucket/storage_api.dart';
 import 'package:plastic_bay/api/user_management/user_api.dart';
 
 import 'package:plastic_bay/features/authentication/controler/auth_state.dart';
 import 'package:plastic_bay/model/waste_contributor.dart';
+import 'package:plastic_bay/routes/route_path.dart';
+import 'package:plastic_bay/utils/toast_message.dart';
 
 final authControllerProvider =
-    StateNotifierProvider<AuthController, AuthState>((ref) {
+    StateNotifierProvider<AuthController, bool>((ref) {
   return AuthController(
-    authAI: ref.watch(authApiProvider),
-    userManagementAPI: ref.watch(userManagementApiProvider),
-    firebaseMessaging: ref.watch(firebaseMassagingAPI),
-  );
+      authAI: ref.watch(authApiProvider),
+      userManagementAPI: ref.watch(userManagementApiProvider),
+      firebaseMessaging: ref.watch(firebaseMassagingProvider),
+      storageAPI: ref.watch(storageApiProvider));
 });
 
-class AuthController extends StateNotifier<AuthState> {
+class AuthController extends StateNotifier<bool> {
   final AuthAPI _authAPI;
   final FirebaseMessaging _firebaseMessaging;
   final UserManagementAPI _userManagementAPI;
+  final StorageAPI _storageAPI;
   AuthController(
       {required AuthAPI authAI,
       required UserManagementAPI userManagementAPI,
-      required FirebaseMessaging firebaseMessaging})
+      required FirebaseMessaging firebaseMessaging,
+      required StorageAPI storageAPI})
       : _authAPI = authAI,
         _userManagementAPI = userManagementAPI,
         _firebaseMessaging = firebaseMessaging,
-        super(AuthState.initial);
+        _storageAPI = storageAPI,
+        super(false);
 
   void register({
     required String email,
     required String password,
     required String name,
+    required String imagePath,
+    required BuildContext context,
   }) async {
-    state = AuthState.loading;
-    final reg = await _authAPI.emailAndPasswordSignUp(email: email, password: password);
+    state = true;
+    final reg =
+        await _authAPI.emailAndPasswordSignUp(email: email, password: password);
     reg.fold((failure) {
-      print(failure.error);
-      state = AuthState.error;
+      state = false;
+      showToastMessage(failure.error.toString(), context);
     }, (userCredentials) async {
+      final imageUrl = await _storageAPI.uploadProfileImage(
+          imagePath: imagePath, userId: userCredentials.user!.uid);
       final geoPoint = await Geolocator.getCurrentPosition();
 
       final notificationToken = await _firebaseMessaging.getToken();
@@ -52,16 +65,20 @@ class AuthController extends StateNotifier<AuthState> {
         notificationToken: notificationToken!,
         contributorLocation: GeoPoint(geoPoint.latitude, geoPoint.longitude),
         joinedAt: DateTime.now(),
-        pictureUrl: '',
+        pictureUrl: imageUrl,
         totalPost: 0,
         earnedPoint: 0,
         pointsSpent: 0,
       );
       final saveDetails = await _userManagementAPI.saveContributorCredentials(
           wasteContributor: contributor);
-      saveDetails.fold((error) => print(error.error), (savedDetails) {
-        ///Save user details in db after successful signUp and navigate home
-        state = AuthState.registered;
+      saveDetails.fold(
+          (failure) => showToastMessage(failure.error.toString(), context),
+          (savedDetails) {
+        state = false;
+        context.goNamed(RoutePath.home);
+        showToastMessage('Hurray! You are now a contributor', context,
+            isSuccess: true);
       });
     });
   }
@@ -69,22 +86,26 @@ class AuthController extends StateNotifier<AuthState> {
   void signIn({
     required String email,
     required String password,
+    required BuildContext context,
   }) async {
-    state = AuthState.loading;
+    state = true;
     final reg = await _authAPI.signIn(email: email, password: password);
     reg.fold((failure) {
-      state = AuthState.error;
+      state = false;
+      showToastMessage(failure.error.toString(), context);
     }, (userCredentials) async {
-      ///get user data from db after login and navigate to home
-      state = AuthState.loggedIn;
+      state = false;
+      showToastMessage('We happy to see you back', context, isSuccess: true);
+      context.goNamed(RoutePath.home);
     });
   }
 
-  void googleSignIn() async {
-    state = AuthState.loading;
+  void googleSignIn(BuildContext context) async {
+    state = true;
     final reg = await _authAPI.googleSignIn();
     reg.fold((failure) {
-      state = AuthState.error;
+      state = false;
+      showToastMessage(failure.error.toString(), context);
     }, (userCredentials) async {
       final geoPoint = await Geolocator.getCurrentPosition();
       final notificationToken = await _firebaseMessaging.getToken();
@@ -103,17 +124,18 @@ class AuthController extends StateNotifier<AuthState> {
       final saveDetails = await _userManagementAPI.saveContributorCredentials(
           wasteContributor: contributor);
       saveDetails.fold((error) => null, (savedDetails) {
-        ///Save user details in db after successful signIn
-        state = AuthState.googleSignIn;
+        state = false;
+        context.goNamed(RoutePath.home);
       });
     });
   }
 
-  void appleSignIn() async {
-    state = AuthState.loading;
-    final reg = await _authAPI.googleSignIn();
+  void appleSignIn(BuildContext context) async {
+    state = true;
+    final reg = await _authAPI.appleSignIn();
     reg.fold((failure) {
-      state = AuthState.error;
+      state = false;
+      showToastMessage(failure.error.toString(), context);
     }, (userCredentials) async {
       final geoPoint = await Geolocator.getCurrentPosition();
       final notificationToken = await _firebaseMessaging.getToken();
@@ -131,64 +153,68 @@ class AuthController extends StateNotifier<AuthState> {
       );
       final saveDetails = await _userManagementAPI.saveContributorCredentials(
           wasteContributor: contributor);
-      saveDetails.fold((error) => null, (savedDetails) {
-        ///Save user details in db after successful signIn
-        state = AuthState.appleSignIn;
+      saveDetails.fold(
+          (failure) => showToastMessage(failure.error.toString(), context),
+          (savedDetails) {
+        state = false;
+        context.goNamed(RoutePath.home);
       });
     });
   }
 
-  void resetPassword({
-    required String email,
-  }) async {
-    state = AuthState.loading;
+  void resetPassword(
+      {required String email, required BuildContext context}) async {
+    state = true;
     final reg = await _authAPI.resetPassword(email: email);
     reg.fold((failure) {
-      state = AuthState.error;
+      state = false;
+      showToastMessage(failure.error.toString(), context);
     }, (userCredentials) {
       ///show
-      state = AuthState.resetPassword;
+      state = false;
     });
   }
 
-  void changePassword({
-    required String newPassword,
-    required String oldPassword,
-  }) async {
-    state = AuthState.loading;
+  void changePassword(
+      {required String newPassword,
+      required String oldPassword,
+      required BuildContext context}) async {
+    state = true;
     final reg = await _authAPI.changePassword(
       newPassword: newPassword,
       oldPassword: oldPassword,
     );
     reg.fold((failure) {
-      state = AuthState.error;
+      state = false;
+      showToastMessage(failure.error.toString(), context);
     }, (userCredentials) {
       ///Save user details in db after successful signIn
-      state = AuthState.changePassword;
+      state = false;
     });
   }
 
-  void logOut() async {
-    state = AuthState.loading;
+  void logOut(BuildContext context) async {
+    state = true;
     final reg = await _authAPI.signOut();
     reg.fold((failure) {
-      state = AuthState.error;
+      state = false;
+      showToastMessage(failure.error.toString(), context);
     }, (userCredentials) {
       ///Save user details in db after successful signIn
-      state = AuthState.changePassword;
+      state = false;
     });
   }
 
-  void deleteAccount({
-    required String password,
-  }) async {
-    state = AuthState.loading;
+  void deleteAccount(
+      {required String password, required BuildContext context}) async {
+    state = true;
     final reg = await _authAPI.deleteAccount(password: password);
     reg.fold((failure) {
-      state = AuthState.error;
+      state = false;
+      showToastMessage(failure.error.toString(), context);
     }, (userCredentials) {
       ///Save user details in db after successful signIn
-      state = AuthState.changePassword;
+      state = false;
     });
   }
 }

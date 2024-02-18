@@ -5,5 +5,7 @@ import '../core/fpdart.dart';
 
 abstract class WasteManagementInterface {
   Future<List<Plastic>> getPlasticPost({required GeoPoint currentLocation});
-  FutureVoid updatePost();
+  FutureVoid updatePost({
+    required Plastic plastic,
+  });
 }

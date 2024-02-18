@@ -18,24 +18,27 @@ class AuthAPI implements AuthInterface {
   @override
   FutureEither<UserCredential> appleSignIn() async {
     try {
-      final rawNonce = generateNonceForSignUp();
-      final nonce = sha256ofString(rawNonce);
+      // final rawNonce = generateNonceForSignUp();
+      // final nonce = sha256ofString(rawNonce);
 
-      final appleCredential = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
-        nonce: nonce,
-      );
-      final oauthCredential = OAuthProvider('apple.com').credential(
-        idToken: appleCredential.identityToken,
-        rawNonce: rawNonce,
-      );
-      final userSignIn =
-          await _firebaseAuth.signInWithCredential(oauthCredential);
+      // final appleCredential = await SignInWithApple.getAppleIDCredential(
+      //   scopes: [
+      //     AppleIDAuthorizationScopes.email,
+      //     AppleIDAuthorizationScopes.fullName,
+      //   ],
+      //   nonce: nonce,
+      // );
+      // final oauthCredential = OAuthProvider('apple.com').credential(
+      //   idToken: appleCredential.identityToken,
+      //   rawNonce: rawNonce,
+      // );
+      AppleAuthProvider appleProvider = AppleAuthProvider();
+      appleProvider = appleProvider.addScope('email');
+      appleProvider = appleProvider.addScope('name');
+      final credential =
+          await FirebaseAuth.instance.signInWithProvider(appleProvider);
 
-      return right(userSignIn);
+      return right(credential);
     } on FirebaseAuthException catch (error, stackTrace) {
       return left(Failure(error.message!, stackTrace));
     }
@@ -62,8 +65,9 @@ class AuthAPI implements AuthInterface {
       return left(Failure(error.message!, stackTrace));
     }
   }
-User  get currentUser => _firebaseAuth.currentUser!;
-Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+
+  User get currentUser => _firebaseAuth.currentUser!;
+  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
   @override
   FutureVoid deleteAccount({
     required String password,
