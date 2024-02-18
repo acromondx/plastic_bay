@@ -20,7 +20,8 @@ final rewardControllerProvider =
 });
 
 final rewardCatalogFutureProvider = FutureProvider((ref) async {
-  return ref.watch(rewardControllerProvider.notifier).rewardCatalog;
+  final rewards = await ref.watch(rewardApiProvider).rewardCatalog();
+  return rewards;
 });
 
 class RewardsController extends StateNotifier<bool> {
@@ -67,7 +68,7 @@ class RewardsController extends StateNotifier<bool> {
   }
 
   Future<List<Reward>> get rewardHistory => _rewardAPI.rewardHistory();
-  Future<List<Reward>> get rewardCatalog => _rewardAPI.rewardCatalog();
+  //Future<List<Reward>> get rewardCatalog => _rewardAPI.rewardCatalog();
 
   void addRewardItem({required Reward reward}) async {
     final add = await _rewardAPI.addRewardItem(reward: reward);

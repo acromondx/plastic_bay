@@ -31,6 +31,11 @@ class AppTheme {
       fontSize: 24.0,
       color: AppColors.primaryColor,
     ),
+    bodyMedium: const TextStyle(
+      fontFamily: "Nunito",
+      fontSize: 15.0,
+      color: Colors.black,
+    ),
   );
   static ThemeData light() {
     return ThemeData(
