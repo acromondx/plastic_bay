@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:waste_company/api/analytics/analytics_api.dart';
 import 'package:waste_company/api/user_management/user_api.dart';
 
 import 'authentication/auth_api.dart';
@@ -48,6 +49,12 @@ final acceptedPlasticPostProvider = FutureProvider.family((ref, bool isCompleted
   return ref.watch(plasticManagementApiProvider).getPlasticPostByCompanyId(isCompleted: isCompleted);
 });
 
+
+final analyticsApiProvider = Provider((ref) {
+  return AnalyticsApi(
+      firestore: ref.watch(firebaseFirestoreProvider),
+      auth: ref.watch(firebaseAuthProvider));
+});
 // final rewardApiProvider = Provider((ref) {
 //   return RewardAPI(
 //       firestore: ref.watch(firebaseFirestoreProvider),
@@ -56,4 +63,8 @@ final acceptedPlasticPostProvider = FutureProvider.family((ref, bool isCompleted
 
 // final storageApiProvider = Provider((ref) {
 //   return StorageAPI(firebaseStorage: ref.watch(storageProvider));
-// });
+// })
+
+final analyticsFutureProvider = FutureProvider((ref) async {
+  return ref.watch(analyticsApiProvider) ;
+});
