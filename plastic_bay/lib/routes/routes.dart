@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:plastic_bay/features/authentication/screen/register.dart';
+import 'package:plastic_bay/features/authentication/screen/sign_up.dart';
 import 'package:plastic_bay/features/home/screens/home_page.dart';
 import 'package:plastic_bay/features/home/screens/welcome_page.dart';
 import 'package:plastic_bay/model/reward.dart';
 import 'package:plastic_bay/routes/route_path.dart';
 
 import '../features/authentication/screen/login.dart';
-import '../features/home/screens/auth_checker.dart';
+import '../features/authentication/screen/auth_checker.dart';
 import '../features/plastic management/screen/create_post.dart';
 import '../features/rewards/screen/reward_details.dart';
 

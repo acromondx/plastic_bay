@@ -76,6 +76,7 @@ class AppTheme {
           color: Colors.black,
         ),
       ),
+      
       datePickerTheme: const DatePickerThemeData(
           backgroundColor: Colors.white,
           shadowColor: AppColors.primaryColor,
@@ -167,7 +168,7 @@ class AppTheme {
           return null;
         }),
       ),
-      chipTheme: const ChipThemeData(elevation: 0),
+      chipTheme: const ChipThemeData(elevation: 0,),
 
       radioTheme: RadioThemeData(
         fillColor: MaterialStateProperty.resolveWith<Color?>(

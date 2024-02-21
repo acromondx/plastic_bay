@@ -3,10 +3,9 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:plastic_bay/utils/enums/post_status.dart';
 
-import 'package:plastic_bay/utils/enums/plastic_type.dart';
-
-import '../utils/enums/post_status.dart';
+import '../utils/enums/plastic_type.dart';
 
 class Plastic {
   final DateTime postedAt;
@@ -19,6 +18,7 @@ class Plastic {
   final String plasticId;
   final String description;
   final double quantity;
+  final String acceptedCompanyId;
   final List<String> imageUrl;
   Plastic({
     required this.postedAt,
@@ -31,6 +31,7 @@ class Plastic {
     required this.plasticId,
     required this.description,
     required this.quantity,
+    required this.acceptedCompanyId,
     required this.imageUrl,
   });
 
@@ -45,6 +46,7 @@ class Plastic {
     String? plasticId,
     String? description,
     double? quantity,
+    String? acceptedCompanyId,
     List<String>? imageUrl,
   }) {
     return Plastic(
@@ -58,6 +60,7 @@ class Plastic {
       plasticId: plasticId ?? this.plasticId,
       description: description ?? this.description,
       quantity: quantity ?? this.quantity,
+      acceptedCompanyId: acceptedCompanyId ?? this.acceptedCompanyId,
       imageUrl: imageUrl ?? this.imageUrl,
     );
   }
@@ -74,6 +77,7 @@ class Plastic {
       'plasticId': plasticId,
       'description': description,
       'quantity': quantity,
+      'acceptedCompanyId': acceptedCompanyId,
       'imageUrl': imageUrl,
     };
   }
@@ -90,8 +94,9 @@ class Plastic {
       plasticId: map['plasticId'] as String,
       description: map['description'] as String,
       quantity: map['quantity'] as double,
-      imageUrl: List<String>.from((map['imageUrl'] as List<String>),
-    ));
+      imageUrl: List<String>.from((map['imageUrl'])),
+      acceptedCompanyId: map['acceptedCompanyId'] as String,
+    );
   }
 
   String toJson() => json.encode(toMap());
@@ -101,40 +106,41 @@ class Plastic {
 
   @override
   String toString() {
-    return 'Plastic(postedAt: $postedAt, pickUpDate: $pickUpDate, pickUpTime: $pickUpTime, location: $location, status: $status, plasticType: $plasticType, contributorId: $contributorId, plasticId: $plasticId, description: $description, quantity: $quantity, imageUrl: $imageUrl)';
+    return 'Plastic(postedAt: $postedAt, pickUpDate: $pickUpDate, pickUpTime: $pickUpTime, location: $location, status: $status, plasticType: $plasticType, contributorId: $contributorId, plasticId: $plasticId, description: $description, quantity: $quantity, acceptedCompanyId: $acceptedCompanyId, imageUrl: $imageUrl)';
   }
 
   @override
   bool operator ==(covariant Plastic other) {
     if (identical(this, other)) return true;
     final listEquals = const DeepCollectionEquality().equals;
-  
-    return 
-      other.postedAt == postedAt &&
-      other.pickUpDate == pickUpDate &&
-      other.pickUpTime == pickUpTime &&
-      other.location == location &&
-      other.status == status &&
-      other.plasticType == plasticType &&
-      other.contributorId == contributorId &&
-      other.plasticId == plasticId &&
-      other.description == description &&
-      other.quantity == quantity &&
-      listEquals(other.imageUrl, imageUrl);
+
+    return other.postedAt == postedAt &&
+        other.pickUpDate == pickUpDate &&
+        other.pickUpTime == pickUpTime &&
+        other.location == location &&
+        other.status == status &&
+        other.plasticType == plasticType &&
+        other.contributorId == contributorId &&
+        other.plasticId == plasticId &&
+        other.description == description &&
+        other.quantity == quantity &&
+        other.acceptedCompanyId == acceptedCompanyId &&
+        listEquals(other.imageUrl, imageUrl);
   }
 
   @override
   int get hashCode {
     return postedAt.hashCode ^
-      pickUpDate.hashCode ^
-      pickUpTime.hashCode ^
-      location.hashCode ^
-      status.hashCode ^
-      plasticType.hashCode ^
-      contributorId.hashCode ^
-      plasticId.hashCode ^
-      description.hashCode ^
-      quantity.hashCode ^
-      imageUrl.hashCode;
+        pickUpDate.hashCode ^
+        pickUpTime.hashCode ^
+        location.hashCode ^
+        status.hashCode ^
+        plasticType.hashCode ^
+        contributorId.hashCode ^
+        plasticId.hashCode ^
+        description.hashCode ^
+        quantity.hashCode ^
+        acceptedCompanyId.hashCode ^
+        imageUrl.hashCode;
   }
 }

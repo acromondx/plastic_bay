@@ -81,6 +81,7 @@ class UserManagementAPI implements UserManagementInterface {
           isGreaterThanOrEqualTo: 0,
         )
         .orderBy('totalPost', descending: true)
+        .limit(50)
         .get();
     return contributors.docs
         .map((e) => WasteContributor.fromMap(e.data()))

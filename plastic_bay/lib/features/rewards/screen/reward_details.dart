@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:plastic_bay/api/local_database/isar_service.dart';
+import 'package:plastic_bay/features/user_management/controller/user_management_controller.dart';
 import 'package:plastic_bay/theme/app_color.dart';
 
 import '../../../model/reward.dart';
 
 class RewardDetails extends HookConsumerWidget {
   final Reward reward;
-  const RewardDetails({super.key, required this.reward});
+  RewardDetails({super.key, required this.reward});
+  final quantityController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,13 +18,23 @@ class RewardDetails extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-       
         title: Text(reward.name),
       ),
       bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                ref.invalidate(contributorProfileDetailsProvider);
+                final cartList = ref.read(cartFutureProvider).value!;
+                for (final cartItem in cartList) {
+                  if (cartItem.rewardId == reward.rewardId) {
+                    reward.copyWith(
+                        quantity: cartItem.quantity +
+                            int.parse(quantityController.text));
+                  }
+                  await ref.read(isarProvider).addToCart(reward: reward);
+                }
+              },
               child: Text(
                 'Add to Cart',
                 style:

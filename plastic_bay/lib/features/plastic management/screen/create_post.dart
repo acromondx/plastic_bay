@@ -26,12 +26,15 @@ class _CreatePostState extends ConsumerState<CreatePost> {
     final imagePath = await pickImage();
     switch (index) {
       case 0:
+        imagePathList.removeAt(index);
         imagePathList.insert(index, imagePath);
         break;
       case 1:
+        imagePathList.removeAt(index);
         imagePathList.insert(index, imagePath);
         break;
       case 2:
+        imagePathList.removeAt(index);
         imagePathList.insert(index, imagePath);
         break;
     }
@@ -42,7 +45,7 @@ class _CreatePostState extends ConsumerState<CreatePost> {
   TimeOfDay dayTime = TimeOfDay.now();
   final descriptionController = TextEditingController();
   final quantityController = TextEditingController();
-  final deadlineController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +123,7 @@ class _CreatePostState extends ConsumerState<CreatePost> {
                           if (date != null) {
                             setState(() {
                               pickUpDate = date;
-                              deadlineController.text = pickUpDate.toString();
+                            
                             });
                           }
                         },

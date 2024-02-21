@@ -26,11 +26,7 @@ class StorageAPI implements StorageInterface {
     required String postId,
   }) async {
     try {
-      final ref = _firebaseStorage
-          .ref()
-          .child('post_images')
-          .child(postId)
-          .child(imagePath);
+      final ref = _firebaseStorage.ref().child('post_images').child(postId);
       await ref.putFile(File(imagePath));
       return await ref.getDownloadURL();
     } catch (error) {

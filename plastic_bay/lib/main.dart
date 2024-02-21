@@ -5,7 +5,7 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:plastic_bay/theme/app_theme.dart';
 import 'api/local_database/isar_service.dart';
-import 'features/authentication/screen/register.dart';
+import 'features/authentication/screen/sign_up.dart';
 import 'firebase_options.dart';
 import 'routes/routes.dart';
 import 'test_screens/myprofile.dart';
@@ -32,11 +32,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: AppTheme.light(),
-     routerConfig: routeConfig,
+      routerConfig: routeConfig,
     );
   }
 }

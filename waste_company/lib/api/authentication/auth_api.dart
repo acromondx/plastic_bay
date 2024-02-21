@@ -11,8 +11,10 @@ class AuthAPI implements AuthInterface {
   final FirebaseAuth _auth;
   AuthAPI({required FirebaseAuth auth}) : _auth = auth;
   @override
-  FutureEither<UserCredential> emailAndPasswordSignUp(
-      {required String email, required String password}) async {
+  FutureEither<UserCredential> emailAndPasswordSignUp({
+    required String email,
+    required String password,
+  }) async {
     try {
       final createUser = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -23,6 +25,7 @@ class AuthAPI implements AuthInterface {
       return left(Failure(error.message!, stackTrace));
     }
   }
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   @override
   FutureEither<UserCredential> login({

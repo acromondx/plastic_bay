@@ -1,49 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:plastic_bay/features/leaderboard/widgets/top_contributors_card.dart';
+import 'package:plastic_bay/model/waste_contributor.dart';
 
 import '../../../theme/app_color.dart';
+import 'dashboard_items.dart';
+import 'point_earned.dart';
 
 class DashBoardCard extends StatelessWidget {
-  final String title;
-  final double points;
-  final Color borderColor;
-  const DashBoardCard(
-      {super.key,
-      required this.title,
-      required this.points,
-      required this.borderColor});
+  final WasteContributor contributor;
+  const DashBoardCard({super.key, required this.contributor});
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width * 0.45,
-      height: 100,
-      decoration: BoxDecoration(
-        color: AppColors.greyColor,
-        border: Border.all(color: borderColor ),
-        borderRadius: BorderRadius.circular(12),
+    return Column(children: <Widget>[
+      PointEarnedCard(pointsRemaining: contributor.earnedPoint),
+      const SizedBox(height: 20),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          DashBoardItems(
+            title: 'Points Earned',
+            points: contributor.earnedPoint + contributor.pointsSpent,
+            borderColor: AppColors.secondaryColor,
+          ),
+          DashBoardItems(
+            title: 'Points Spent',
+            points: contributor.pointsSpent,
+            borderColor: Colors.redAccent,
+          ),
+        ],
       ),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              style: textTheme.titleLarge!.copyWith(
-                fontSize: 15,
-                color: Colors.black,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(points.toString(),
-                style: textTheme.titleLarge!.copyWith(
-                  fontSize: 24,
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                )),
-          ]),
-    );
+      const SizedBox(height: 20),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          DashBoardItems(
+            title: 'Total Posts',
+            isDouble: false,
+            points: contributor.totalPost.toDouble(),
+            borderColor: AppColors.secondaryColor,
+          ),
+          DashBoardItems(
+            title: 'Pending Posts',
+            isDouble: false,
+            points: contributor.totalPost.toDouble(),
+            borderColor: AppColors.secondaryColor,
+          ),
+        ],
+      ),
+      const SizedBox(height: 20),
+      Text('Recent Posts', style: Theme.of(context).textTheme.titleLarge),
+      const SizedBox(height: 20),
+    ]);
   }
 }

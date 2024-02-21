@@ -8,6 +8,7 @@ import 'package:plastic_bay/routes/route_path.dart';
 
 import '../../../common/bottom_bar_icons.dart';
 import '../../../constants/constants.dart';
+import '../../rewards/widget/cart.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
@@ -17,9 +18,11 @@ class HomePage extends HookConsumerWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Plastic Bay'),
+          actions: const [CartIcon()],
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
-          onPressed: () =>context.pushNamed(RoutePath.createPost),
+          onPressed: () => context.pushNamed(RoutePath.createPost),
           child: const Icon(Icons.add),
         ),
         body: screens[currentIndex.value],

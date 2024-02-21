@@ -6,20 +6,21 @@ import '../../model/reward.dart';
 final isarProvider =
     Provider<IsarServices>((ref) => throw UnimplementedError());
 
+final cartFutureProvider = FutureProvider((ref) async {
+  return ref.watch(isarProvider).geCart(); 
+});
+
 class IsarServices {
   IsarServices(this.isar);
 
   final Isar isar;
 
-  Future<void> addToCart({required Reward reward}) async {
-  }
-  Future<void> updateCart({required Reward reward}) async {
-  }
+  Future<void> addToCart({required Reward reward}) async {}
+  Future<void> updateCart({required Reward reward}) async {}
 
-  Future<void> removeFromCart({required int cartId}) async {
-  }
+  Future<void> removeFromCart({required int cartId}) async {}
 
   Future<List<Reward>> geCart() async {
- return <Reward>[];
+    return <Reward>[];
   }
 }

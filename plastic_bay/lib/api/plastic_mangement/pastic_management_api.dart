@@ -51,7 +51,6 @@ class PlasticManagementAPI implements PlasticManagementInterface {
     final posts = await _firestore
         .collection('plastic_post')
         .where('contributorId', isEqualTo: contributorId)
-        .orderBy('postedAt', descending: true)
         .get();
     return posts.docs.map((e) => Plastic.fromMap(e.data())).toList();
   }

@@ -15,7 +15,6 @@ List<PlasticType> plasticType = [
   PlasticType.ldpe,
   PlasticType.pp,
   PlasticType.ps,
-  PlasticType.pet,
 ];
 
 PlasticType plasticFromStringToType(String text) => switch (text) {

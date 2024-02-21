@@ -82,6 +82,7 @@ class PlasticManagementController extends StateNotifier<bool> {
       description: description,
       quantity: quantity,
       imageUrl: imageUrls,
+      acceptedCompanyId: '',
     );
     final post = await _plasticManagementAPI.createPost(plastic: plastic);
     post.fold((failure) => showToastMessage(failure.error.toString(), context),

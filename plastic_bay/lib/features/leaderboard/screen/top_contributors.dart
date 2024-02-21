@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../leaderboard/controller/leader_board_controller.dart';
+import '../controller/leader_board_controller.dart';
 import '../widgets/top_contributors_card.dart';
 
 class TopContributors extends ConsumerWidget {

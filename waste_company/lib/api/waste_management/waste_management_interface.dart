@@ -4,8 +4,10 @@ import 'package:waste_company/model/plastic.dart';
 import '../core/fpdart.dart';
 
 abstract class WasteManagementInterface {
-  Future<List<Plastic>> getPlasticPost({required GeoPoint currentLocation});
+  Future<List<Plastic>> getPlasticPost();
   FutureVoid updatePost({
-    required Plastic plastic,
+    required String plasticId,
+    required Map<String,dynamic> updateFields
   });
+  Future<List<Plastic>> getPlasticPostByCompanyId({required bool isCompleted}); 
 }
