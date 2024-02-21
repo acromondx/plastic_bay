@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<String> getStreetAddress(GeoPoint point) async {
@@ -22,20 +23,28 @@ Future<String> getStreetAddress(GeoPoint point) async {
   }
 }
 
-Future<void> getDirection(GeoPoint point) async {
-  String mapUrl = '';
-  if (Platform.isIOS) {
-    mapUrl =
-        'https://maps.apple.com/?daddr=${point.latitude},${point.longitude}';
-  } else {
-    mapUrl =
-        'https://www.google.com/maps/dir/?api=1&destination=${point.latitude},${point.longitude}&travelmode=driving';
-  }
-
-  if (await canLaunchUrl(Uri.parse(mapUrl))) {
-    await launchUrl(Uri.parse(mapUrl), mode: LaunchMode.externalApplication);
-  } else {
-    throw 'Could not open the map.';
+Future<void> getDirection(
+    {required GeoPoint point, required String address}) async {
+  if (Platform.isAndroid) {
+    final mapAvailable = await MapLauncher.isMapAvailable(MapType.google);
+    if (mapAvailable!) {
+      return await MapLauncher.showMarker(
+        mapType: MapType.google,
+        coords: Coords(point.latitude, point.longitude),
+        title: address,
+        description: 'Follow the direction to pick up location',
+      );
+    }
+  } else if (Platform.isIOS) {
+    final mapAvailable = await MapLauncher.isMapAvailable(MapType.apple);
+    if (mapAvailable!) {
+      return await MapLauncher.showMarker(
+        mapType: MapType.apple,
+        coords: Coords(point.latitude, point.longitude),
+        title: address,
+        description: 'Follow the direction to pick up location',
+      );
+    }
   }
 }
 

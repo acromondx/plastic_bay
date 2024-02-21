@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:go_router/go_router.dart';
+import 'package:waste_company/api/providers.dart';
+import 'package:waste_company/features/waste_management/controller/controller.dart';
 
 import 'package:waste_company/model/plastic.dart';
 import 'package:waste_company/routes/route_path.dart';
@@ -10,15 +13,20 @@ import '../../../theme/app_color.dart';
 import '../../../utils/reuseables.dart';
 import 'carousel_image.dart';
 
-class PlasticPostCard extends StatefulWidget {
+class PlasticPostCard extends ConsumerStatefulWidget {
   final Plastic plastic;
-  const PlasticPostCard({super.key, required this.plastic});
+  final bool isPickedUp;
+  const PlasticPostCard({
+    super.key,
+    required this.plastic,
+    this.isPickedUp = false,
+  });
 
   @override
-  State<PlasticPostCard> createState() => _PlasticPostCardState();
+  ConsumerState<PlasticPostCard> createState() => _PlasticPostCardState();
 }
 
-class _PlasticPostCardState extends State<PlasticPostCard> {
+class _PlasticPostCardState extends ConsumerState<PlasticPostCard> {
   String address = '';
   @override
   void initState() {
@@ -37,7 +45,10 @@ class _PlasticPostCardState extends State<PlasticPostCard> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).colorScheme.secondary),
+          border: Border.all(
+              color: widget.isPickedUp
+                  ? Colors.red
+                  : Theme.of(context).colorScheme.secondary),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -67,21 +78,24 @@ class _PlasticPostCardState extends State<PlasticPostCard> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Row(
                 children: [
                   const Icon(
                     Icons.location_on,
                     color: AppColors.primaryColor,
                   ),
-                  Text(address),
+                  Text(address, style: textTheme.titleMedium),
                   const Spacer(),
                   TextButton(
                       onPressed: () {
-                        getDirection(widget.plastic.location);
+                        getDirection(
+                            point: widget.plastic.location, address: address);
                       },
-                      child: const Text('Get Direction')),
-                  const Spacer(),
+                      child: Text(
+                        'Get Direction',
+                        style: textTheme.titleMedium,
+                      )),
                 ],
               ),
             ),
@@ -115,24 +129,87 @@ class _PlasticPostCardState extends State<PlasticPostCard> {
                 ],
               ),
             ),
+            widget.isPickedUp
+                ? const SizedBox.shrink()
+                : widget.plastic.status == PlasticStatus.accepted
+                    ? const SizedBox()
+                    : ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(200, 40),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          context.pushNamed(RoutePath.acceptPost,
+                              extra: widget.plastic);
+                        },
+                        child: Text(
+                          'Accept',
+                          style: textTheme.bodyMedium!
+                              .copyWith(color: AppColors.greyColor),
+                        )),
             widget.plastic.status == PlasticStatus.accepted
-                ? const SizedBox()
-                : ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(200, 40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MaterialButton(
+                          minWidth: 150,
+                          height: 50,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          color: Colors.red,
+                          onPressed: () {
+                            ref
+                                .read(plasticControllerProvider.notifier)
+                                .cancelPickUp(
+                                  postId: widget.plastic.plasticId,
+                                  context: context,
+                                )
+                                .then((value) {
+                              ref.invalidate(acceptedPlasticPostProvider(true));
+                              ref.invalidate(plasticPostProvider);
+                            });
+                          },
+                          child: Text(
+                            'Cancel',
+                            style: textTheme.bodyMedium!
+                                .copyWith(color: AppColors.greyColor),
+                          ),
+                        ),
+                        const Spacer(),
+                        MaterialButton(
+                          minWidth: 150,
+                          height: 50,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          color: AppColors.primaryColor,
+                          onPressed: () {
+                            ref
+                                .read(plasticControllerProvider.notifier)
+                                .pickedUp(
+                                    postId: widget.plastic.plasticId,
+                                    context: context)
+                                .then((value) {
+                              ref.invalidate(acceptedPlasticPostProvider(true));
+                              ref.invalidate(
+                                  acceptedPlasticPostProvider(false));
+                            });
+                          },
+                          child: Text(
+                            'Pick Up',
+                            style: textTheme.bodyMedium!
+                                .copyWith(color: AppColors.greyColor),
+                          ),
+                        )
+                      ],
                     ),
-                    onPressed: () {
-                      context.pushNamed(RoutePath.acceptPost,
-                          extra: widget.plastic);
-                    },
-                    child: Text(
-                      'Accept',
-                      style: textTheme.bodyMedium!
-                          .copyWith(color: AppColors.greyColor),
-                    )),
+                  )
+                : const SizedBox.shrink(),
             const SizedBox(height: 10),
           ],
         ),

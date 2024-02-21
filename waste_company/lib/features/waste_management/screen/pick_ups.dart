@@ -58,6 +58,7 @@ class PickUps extends ConsumerWidget {
                               itemCount: plasticsPosts.length,
                               itemBuilder: (context, index) {
                                 return PlasticPostCard(
+                                    isPickedUp: true,
                                     plastic: plasticsPosts[index]);
                               });
                     },

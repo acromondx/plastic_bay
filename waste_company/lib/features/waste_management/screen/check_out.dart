@@ -4,6 +4,7 @@ import 'package:waste_company/theme/app_color.dart';
 import 'package:waste_company/utils/loading_alert.dart';
 import 'package:waste_company/utils/reuseables.dart';
 
+import '../../../api/providers.dart';
 import '../../../model/plastic.dart';
 import '../controller/controller.dart';
 
@@ -121,11 +122,14 @@ class _PostCheckOutState extends ConsumerState<PostCheckOut> {
                   const SizedBox(height: 30),
                   ElevatedButton(
                       onPressed: () {
-                        plasticController.schedulePickUp(
-                            pickUpDate: pickUpDate.toOrdinalDate(),
-                            pickUpTime: pickUpTime.format(context),
-                            postId: widget.plastic.plasticId,
-                            context: context);
+                        plasticController
+                            .schedulePickUp(
+                                pickUpDate: pickUpDate.toOrdinalDate(),
+                                pickUpTime: pickUpTime.format(context),
+                                postId: widget.plastic.plasticId,
+                                context: context)
+                            .then(
+                                (value) => ref.invalidate(plasticPostProvider));
                       },
                       child: Text(
                         'Schedule Pickup',

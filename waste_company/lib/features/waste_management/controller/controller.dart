@@ -25,7 +25,7 @@ class PlasticController extends StateNotifier<bool> {
         _auth = auth,
         super(false);
 
-  void schedulePickUp({
+  Future<void> schedulePickUp({
     required String pickUpDate,
     required String pickUpTime,
     required String postId,
@@ -44,5 +44,43 @@ class PlasticController extends StateNotifier<bool> {
     plasticUpdate.fold(
         (failure) => showToastMessage(failure.error.toString(), context),
         (r) => context.pop());
+  }
+
+  Future<void> cancelPickUp({
+    required String postId,
+    required BuildContext context,
+  }) async {
+    state = true;
+    final update = {
+      'pickUpDate': '',
+      "pickUpTime": '',
+      'status': PlasticStatus.pending.name,
+      'acceptedCompanyId': '',
+    };
+    final plasticUpdate = await _wasteManagementAPI.updatePost(
+        plasticId: postId, updateFields: update);
+    state = false;
+    plasticUpdate.fold(
+        (failure) => showToastMessage(failure.error.toString(), context),
+        (r) => showToastMessage(
+              'Pick up cancelled',
+              context,
+            ));
+  }
+
+  Future<void> pickedUp({
+    required String postId,
+    required BuildContext context,
+  }) async {
+    state = true;
+    final update = {
+      'status': PlasticStatus.pickedUp.name,
+    };
+    final plasticUpdate = await _wasteManagementAPI.updatePost(
+        plasticId: postId, updateFields: update);
+    state = false;
+    plasticUpdate.fold(
+        (failure) => showToastMessage(failure.error.toString(), context),
+        (r) => showToastMessage('Picked up success', context, isSuccess: true));
   }
 }
