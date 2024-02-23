@@ -45,10 +45,14 @@ final plasticManagementApiProvider = Provider((ref) {
       firestore: ref.watch(firebaseFirestoreProvider),
       auth: ref.watch(firebaseAuthProvider));
 });
-final acceptedPlasticPostProvider = FutureProvider.family((ref, bool isCompleted,) async {
-  return ref.watch(plasticManagementApiProvider).getPlasticPostByCompanyId(isCompleted: isCompleted);
+final acceptedPlasticPostProvider = FutureProvider.family.autoDispose((
+  ref,
+  bool isCompleted,
+) async {
+  return ref
+      .watch(plasticManagementApiProvider)
+      .getPlasticPostByCompanyId(isCompleted: isCompleted);
 });
-
 
 final analyticsApiProvider = Provider((ref) {
   return AnalyticsApi(
@@ -66,5 +70,5 @@ final analyticsApiProvider = Provider((ref) {
 // })
 
 final analyticsFutureProvider = FutureProvider((ref) async {
-  return ref.watch(analyticsApiProvider) ;
+  return ref.watch(analyticsApiProvider).getAnalytics();
 });

@@ -168,6 +168,7 @@ class _PlasticPostCardState extends ConsumerState<PlasticPostCard> {
                                 .cancelPickUp(
                                   postId: widget.plastic.plasticId,
                                   context: context,
+                                  contributorsId: widget.plastic.contributorId,
                                 )
                                 .then((value) {
                               ref.invalidate(acceptedPlasticPostProvider(true));
@@ -193,6 +194,8 @@ class _PlasticPostCardState extends ConsumerState<PlasticPostCard> {
                                 .read(plasticControllerProvider.notifier)
                                 .pickedUp(
                                     postId: widget.plastic.plasticId,
+                                    contributorsId:
+                                        widget.plastic.contributorId,
                                     context: context)
                                 .then((value) {
                               ref.invalidate(acceptedPlasticPostProvider(true));

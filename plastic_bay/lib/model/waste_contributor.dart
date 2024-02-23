@@ -15,6 +15,7 @@ class WasteContributor {
   final int totalPost;
   final double earnedPoint;
   final double pointsSpent;
+  final int pendingPost;
   WasteContributor({
     required this.id,
     required this.name,
@@ -26,6 +27,7 @@ class WasteContributor {
     required this.totalPost,
     required this.earnedPoint,
     required this.pointsSpent,
+    required this.pendingPost,
   });
 
   WasteContributor copyWith({
@@ -39,6 +41,7 @@ class WasteContributor {
     int? totalPost,
     double? earnedPoint,
     double? pointsSpent,
+    int? pendingPost,
   }) {
     return WasteContributor(
       id: id ?? this.id,
@@ -51,6 +54,7 @@ class WasteContributor {
       totalPost: totalPost ?? this.totalPost,
       earnedPoint: earnedPoint ?? this.earnedPoint,
       pointsSpent: pointsSpent ?? this.pointsSpent,
+      pendingPost: pendingPost ?? this.pendingPost,
     );
   }
 
@@ -66,12 +70,13 @@ class WasteContributor {
       'totalPost': totalPost,
       'earnedPoint': earnedPoint,
       'pointsSpent': pointsSpent,
+      'pendingPost': pendingPost,
     };
   }
 
   factory WasteContributor.fromMap(Map<String, dynamic> map) {
     return WasteContributor(
-      id: map['id'] as String,
+       id: map['id'] as String,
       name: map['name'] as String,
       email: map['email'] as String,
       notificationToken: map['notificationToken'] as String,
@@ -81,6 +86,7 @@ class WasteContributor {
       totalPost: map['totalPost'] as int,
       earnedPoint: map['earnedPoint'] as double,
       pointsSpent: map['pointsSpent'] as double,
+      pendingPost: map['pendingPost'] as int,
     );
   }
 
@@ -91,36 +97,39 @@ class WasteContributor {
 
   @override
   String toString() {
-    return 'WasteContributor(id: $id, name: $name, email: $email, notificationToken: $notificationToken, contributorLocation: $contributorLocation, joinedAt: $joinedAt, pictureUrl: $pictureUrl, totalPost: $totalPost, earnedPoint: $earnedPoint, pointsSpent: $pointsSpent)';
+    return 'WasteContributor(id: $id, name: $name, email: $email, notificationToken: $notificationToken, contributorLocation: $contributorLocation, joinedAt: $joinedAt, pictureUrl: $pictureUrl, totalPost: $totalPost, earnedPoint: $earnedPoint, pointsSpent: $pointsSpent, pendingPost: $pendingPost)';
   }
 
   @override
   bool operator ==(covariant WasteContributor other) {
     if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.name == name &&
-        other.email == email &&
-        other.notificationToken == notificationToken &&
-        other.contributorLocation == contributorLocation &&
-        other.joinedAt == joinedAt &&
-        other.pictureUrl == pictureUrl &&
-        other.totalPost == totalPost &&
-        other.earnedPoint == earnedPoint &&
-        other.pointsSpent == pointsSpent;
+  
+    return 
+      other.id == id &&
+      other.name == name &&
+      other.email == email &&
+      other.notificationToken == notificationToken &&
+      other.contributorLocation == contributorLocation &&
+      other.joinedAt == joinedAt &&
+      other.pictureUrl == pictureUrl &&
+      other.totalPost == totalPost &&
+      other.earnedPoint == earnedPoint &&
+      other.pointsSpent == pointsSpent &&
+      other.pendingPost == pendingPost;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-        name.hashCode ^
-        email.hashCode ^
-        notificationToken.hashCode ^
-        contributorLocation.hashCode ^
-        joinedAt.hashCode ^
-        pictureUrl.hashCode ^
-        totalPost.hashCode ^
-        earnedPoint.hashCode ^
-        pointsSpent.hashCode;
+      name.hashCode ^
+      email.hashCode ^
+      notificationToken.hashCode ^
+      contributorLocation.hashCode ^
+      joinedAt.hashCode ^
+      pictureUrl.hashCode ^
+      totalPost.hashCode ^
+      earnedPoint.hashCode ^
+      pointsSpent.hashCode ^
+      pendingPost.hashCode;
   }
 }

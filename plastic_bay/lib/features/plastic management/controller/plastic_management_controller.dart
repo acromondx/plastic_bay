@@ -49,7 +49,7 @@ class PlasticManagementController extends StateNotifier<bool> {
         _storageAPI = storageAPI,
         super(false);
 
-  void createPost({
+  Future<void> createPost({
     required String description,
     required PlasticType plasticType,
     required double quantity,
@@ -89,7 +89,10 @@ class PlasticManagementController extends StateNotifier<bool> {
         (r) async {
       await _userManagementAPI.updateContributorDetails(
           wasteContributorId: _authAPI.currentUser.uid,
-          details: {'totalPost': FieldValue.increment(1)});
+          details: {
+            'totalPost': FieldValue.increment(1),
+            'pendingPost': FieldValue.increment(1)
+          });
       state = false;
       context.pop();
     });

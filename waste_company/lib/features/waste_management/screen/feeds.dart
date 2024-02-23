@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:waste_company/api/providers.dart';
 import 'package:waste_company/features/waste_management/widget/post_card.dart';
 
+import '../../../model/analytics.dart';
 import '../../../utils/loading_alert.dart';
 
 class Feeds extends ConsumerWidget {
@@ -13,18 +15,23 @@ class Feeds extends ConsumerWidget {
     final post = ref.watch(plasticPostProvider);
     return Padding(
       padding: const EdgeInsetsDirectional.all(12),
-      child: post.when(
-        data: (posts) {
-          return ListView.builder(
-            itemCount: posts.length,
-            itemBuilder: (context, index) {
-            return PlasticPostCard(plastic: posts[index]);
-          });
+      child: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(plasticPostProvider);
+         
         },
-        error: (error, stackTrace) => Center(
-          child: Text(error.toString()),
+        child: post.when(
+          data: (posts) {
+            return ListView.builder(
+                itemCount: posts.length,
+                itemBuilder: (context, index) {
+                  final post = posts[index];
+                  return PlasticPostCard(plastic: post);
+                });
+          },
+          error: (error, stackTrace) => Center(child: Text(error.toString())),
+          loading: () => const LoadingIndicator(),
         ),
-        loading: () => const LoadingIndicator(),
       ),
     );
   }

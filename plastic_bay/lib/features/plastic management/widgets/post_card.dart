@@ -43,13 +43,15 @@ class _PlasticPostCardState extends State<PlasticPostCard> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 50,
-              child: TimerCountdown(
-                  timeTextStyle: const TextStyle(color: Colors.red),
-                  endTime: parseDateString(
-                      '${widget.plastic.pickUpDate} ${widget.plastic.pickUpTime}')),
-            ),
+            widget.plastic.status == PlasticStatus.accepted
+                ? SizedBox(
+                    height: 50,
+                    child: TimerCountdown(
+                        timeTextStyle: const TextStyle(color: Colors.red),
+                        endTime: parseDateString(
+                            '${widget.plastic.pickUpDate} ${widget.plastic.pickUpTime}')),
+                  )
+                : const SizedBox.shrink(),
             CarouselImage(imageLink: widget.plastic.imageUrl),
             ListTile(
               title: Text(widget.plastic.description),

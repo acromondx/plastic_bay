@@ -39,7 +39,7 @@ class DashBoard extends ConsumerWidget {
                       Center(child: Text(error.toString())),
                   loading: () => const LoadingIndicator()));
         },
-        error: (error, stackTrace) => Center(child: Text(error.toString())),
+        error: (error, stackTrace) => Center(child: Text(stackTrace.toString())),
         loading: () => const LoadingIndicator(),
       ),
     ));

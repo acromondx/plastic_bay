@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:waste_company/api/analytics/analytics_api.dart';
 import 'package:waste_company/api/authentication/auth_api.dart';
 import 'package:waste_company/api/providers.dart';
 import 'package:waste_company/api/user_management/user_api.dart';
@@ -12,25 +13,32 @@ import 'package:waste_company/model/waste_company.dart';
 import 'package:waste_company/routes/route_path.dart';
 import 'package:waste_company/utils/toast_message.dart';
 
+import '../../../model/analytics.dart';
+
 final authControllerProvider =
     StateNotifierProvider<AuthController, bool>((ref) {
   return AuthController(
       authAPI: ref.watch(authApiProvider),
       userManagementAPI: ref.watch(userManagementApiProvider),
-      messaging: ref.watch(firebaseMassagingProvider));
+      messaging: ref.watch(firebaseMassagingProvider),
+      analyticsApi: ref.watch(analyticsApiProvider),
+      );
 });
 
 class AuthController extends StateNotifier<bool> {
   final AuthAPI _authAPI;
   final UserManagementAPI _userManagementAPI;
   final FirebaseMessaging _firebaseMessaging;
+  final AnalyticsApi _analyticsApi;
   AuthController({
     required AuthAPI authAPI,
     required UserManagementAPI userManagementAPI,
     required FirebaseMessaging messaging,
+    required AnalyticsApi analyticsApi,
   })  : _userManagementAPI = userManagementAPI,
         _authAPI = authAPI,
         _firebaseMessaging = messaging,
+        _analyticsApi=analyticsApi,
         super(false);
 
   void register({
@@ -65,6 +73,14 @@ class AuthController extends StateNotifier<bool> {
         state = false;
         showToastMessage(failure.error.toString(), context);
       }, (r) {
+         Analytics analytics = Analytics(
+          acceptedPost: 0,
+          id: user.uid,
+          pendingPost: 0,
+          pickedUpPost: 0,
+          pointsGiven: 0,
+        );
+        _analyticsApi.saveAnalytics(analytics: analytics);
         state = false;
         context.goNamed(RoutePath.home);
       });

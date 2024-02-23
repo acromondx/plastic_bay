@@ -53,4 +53,20 @@ class WasteManagementAPI implements WasteManagementInterface {
         .map((e) => Plastic.fromMap(e.data()))
         .toList();
   }
+
+  @override
+  FutureVoid updateContributorsAnalytics({
+    required String contributorsId,
+    required Map<String, dynamic> updateFields,
+  }) async {
+    try {
+      final updateDocument = await _firestore
+          .collection('wasteContributors')
+          .doc(contributorsId)
+          .update(updateFields);
+      return right(updateDocument);
+    } catch (error, stackTrace) {
+      return left(Failure(error, stackTrace));
+    }
+  }
 }

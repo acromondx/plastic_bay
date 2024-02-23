@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../constant/app_constants.dart';
@@ -16,7 +17,7 @@ class HomePage extends HookConsumerWidget {
       body: screens[currentIndex.value],
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentIndex.value,
-          onTap: (index) {
+          onTap: (index) async {
             currentIndex.value = index;
           },
           items: const [
@@ -25,7 +26,7 @@ class HomePage extends HookConsumerWidget {
             BottomNavigationBarItem(
                 icon: Icon(Icons.schedule_outlined), label: 'Pick Ups'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: 'Settings'),
+                icon: Icon(Icons.analytics), label: 'Analytics'),
           ]),
     );
   }

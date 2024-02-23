@@ -48,7 +48,7 @@ dependencies:
   go_router: ^13.2.0
   hooks_riverpod: ^2.4.9
   timeago: ^3.6.1
-  url_launcher: ^6.2.4
+  permission_handler: ^11.3.0
   uuid: ^4.3.3
   map_launcher: ^3.1.0
 

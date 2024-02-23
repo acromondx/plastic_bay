@@ -8,7 +8,6 @@ import 'package:plastic_bay/utils/extensions/date_format.dart';
 import 'package:plastic_bay/utils/loading_alert.dart';
 import 'package:plastic_bay/utils/reuseables.dart';
 import 'package:plastic_bay/utils/toast_message.dart';
-
 import '../controller/plastic_management_controller.dart';
 import '../widgets/post_text_field.dart';
 
@@ -45,7 +44,6 @@ class _CreatePostState extends ConsumerState<CreatePost> {
   TimeOfDay dayTime = TimeOfDay.now();
   final descriptionController = TextEditingController();
   final quantityController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -112,89 +110,7 @@ class _CreatePostState extends ConsumerState<CreatePost> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () async {
-                          final DateTime? date = await showDatePicker(
-                              context: context,
-                              initialDate: pickUpDate,
-                              firstDate:
-                                  DateTime.now().add(const Duration(days: 1)),
-                              lastDate: DateTime(2050));
-                          if (date != null) {
-                            setState(() {
-                              pickUpDate = date;
-                            
-                            });
-                          }
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                              color: Colors.grey.withOpacity(0.6),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'PickUp Date',
-                                style: textTheme.bodyMedium!.copyWith(
-                                  fontSize: 15,
-                                ),
-                              ),
-                              Text(
-                                pickUpDate.toOrdinalDate(),
-                                style: textTheme.bodyMedium!.copyWith(
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () async {
-                          final TimeOfDay? pickedTime = await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.now(),
-                          );
-                          if (pickedTime != null) {
-                            setState(() {
-                              dayTime = pickedTime;
-                              // deadlineController.text = pickUpDate.toString();
-                            });
-                          }
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                              color: Colors.grey.withOpacity(0.6),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'PickUp Time',
-                                style: textTheme.bodyMedium!.copyWith(
-                                  fontSize: 15,
-                                ),
-                              ),
-                              Text(
-                                dayTime.format(context),
-                                style: textTheme.bodyMedium!.copyWith(
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      const Text('Select plastic type'),
                       Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: DropdownButton<PlasticType>(
@@ -228,7 +144,9 @@ class _CreatePostState extends ConsumerState<CreatePost> {
                               pickUpDate: pickUpDate.toOrdinalDate(),
                               pickUpTime: dayTime.format(context),
                               context: context,
-                            );
+                            ).then((value){
+                              ref.invalidate(myPlasticPostFutureProvider);
+                            });
                           }
                         },
                         child: Text('Create Post',

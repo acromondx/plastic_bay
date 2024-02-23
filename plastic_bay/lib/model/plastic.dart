@@ -95,7 +95,7 @@ class Plastic {
       description: map['description'] as String,
       quantity: map['quantity'] as double,
       imageUrl: List<String>.from((map['imageUrl'])),
-      acceptedCompanyId: map['acceptedCompanyId'] as String,
+      acceptedCompanyId: map['acceptedCompanyId']==null?  '':map['acceptedCompanyId'] as String,
     );
   }
 

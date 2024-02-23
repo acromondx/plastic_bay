@@ -6,11 +6,13 @@ class Analytics {
   final int acceptedPost;
   final int pendingPost;
   final int pickedUpPost;
+  final double pointsGiven;
   Analytics({
     required this.id,
     required this.acceptedPost,
     required this.pendingPost,
     required this.pickedUpPost,
+    required this.pointsGiven,
   });
 
   Analytics copyWith({
@@ -18,12 +20,14 @@ class Analytics {
     int? acceptedPost,
     int? pendingPost,
     int? pickedUpPost,
+    double? pointsGiven,
   }) {
     return Analytics(
       id: id ?? this.id,
       acceptedPost: acceptedPost ?? this.acceptedPost,
       pendingPost: pendingPost ?? this.pendingPost,
       pickedUpPost: pickedUpPost ?? this.pickedUpPost,
+      pointsGiven: pointsGiven ?? this.pointsGiven,
     );
   }
 
@@ -33,6 +37,7 @@ class Analytics {
       'acceptedPost': acceptedPost,
       'pendingPost': pendingPost,
       'pickedUpPost': pickedUpPost,
+      'pointsGiven': pointsGiven,
     };
   }
 
@@ -42,6 +47,7 @@ class Analytics {
       acceptedPost: map['acceptedPost'] as int,
       pendingPost: map['pendingPost'] as int,
       pickedUpPost: map['pickedUpPost'] as int,
+      pointsGiven: map['pointsGiven'] as double,
     );
   }
 
@@ -51,7 +57,7 @@ class Analytics {
 
   @override
   String toString() {
-    return 'Analytics(id: $id, acceptedPost: $acceptedPost, pendingPost: $pendingPost, pickedUpPost: $pickedUpPost)';
+    return 'Analytics(id: $id, acceptedPost: $acceptedPost, pendingPost: $pendingPost, pickedUpPost: $pickedUpPost, pointsGiven: $pointsGiven)';
   }
 
   @override
@@ -62,7 +68,8 @@ class Analytics {
       other.id == id &&
       other.acceptedPost == acceptedPost &&
       other.pendingPost == pendingPost &&
-      other.pickedUpPost == pickedUpPost;
+      other.pickedUpPost == pickedUpPost &&
+      other.pointsGiven == pointsGiven;
   }
 
   @override
@@ -70,6 +77,7 @@ class Analytics {
     return id.hashCode ^
       acceptedPost.hashCode ^
       pendingPost.hashCode ^
-      pickedUpPost.hashCode;
+      pickedUpPost.hashCode ^
+      pointsGiven.hashCode;
   }
 }

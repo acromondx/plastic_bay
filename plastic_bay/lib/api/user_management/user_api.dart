@@ -34,6 +34,7 @@ class UserManagementAPI implements UserManagementInterface {
         .collection('wasteContributors')
         .doc(wasteContributorId)
         .get();
+        print(details.data());
     return WasteContributor.fromMap(details.data()!);
   }
 

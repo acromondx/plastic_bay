@@ -59,17 +59,17 @@ class AuthController extends StateNotifier<bool> {
 
       final notificationToken = await _firebaseMessaging.getToken();
       WasteContributor contributor = WasteContributor(
-        id: userCredentials.user!.uid,
-        name: name,
-        email: email,
-        notificationToken: notificationToken!,
-        contributorLocation: GeoPoint(geoPoint.latitude, geoPoint.longitude),
-        joinedAt: DateTime.now(),
-        pictureUrl: imageUrl,
-        totalPost: 0,
-        earnedPoint: 0,
-        pointsSpent: 0,
-      );
+          id: userCredentials.user!.uid,
+          name: name,
+          email: email,
+          notificationToken: notificationToken!,
+          contributorLocation: GeoPoint(geoPoint.latitude, geoPoint.longitude),
+          joinedAt: DateTime.now(),
+          pictureUrl: imageUrl,
+          totalPost: 0,
+          earnedPoint: 0.0,
+          pointsSpent: 0.0,
+          pendingPost: 0);
       final saveDetails = await _userManagementAPI.saveContributorCredentials(
           wasteContributor: contributor);
       saveDetails.fold(
@@ -110,17 +110,17 @@ class AuthController extends StateNotifier<bool> {
       final geoPoint = await Geolocator.getCurrentPosition();
       final notificationToken = await _firebaseMessaging.getToken();
       WasteContributor contributor = WasteContributor(
-        id: userCredentials.user!.uid,
-        name: userCredentials.user!.displayName!,
-        email: userCredentials.user!.email!,
-        notificationToken: notificationToken!,
-        contributorLocation: GeoPoint(geoPoint.latitude, geoPoint.longitude),
-        joinedAt: DateTime.now(),
-        pictureUrl: userCredentials.user!.photoURL!,
-        totalPost: 0,
-        earnedPoint: 0,
-        pointsSpent: 0,
-      );
+          id: userCredentials.user!.uid,
+          name: userCredentials.user!.displayName!,
+          email: userCredentials.user!.email!,
+          notificationToken: notificationToken!,
+          contributorLocation: GeoPoint(geoPoint.latitude, geoPoint.longitude),
+          joinedAt: DateTime.now(),
+          pictureUrl: userCredentials.user!.photoURL!,
+          totalPost: 0,
+          earnedPoint: 0.0,
+          pointsSpent: 0.0,
+          pendingPost: 0);
       final saveDetails = await _userManagementAPI.saveContributorCredentials(
           wasteContributor: contributor);
       saveDetails.fold((error) => null, (savedDetails) {
@@ -148,8 +148,9 @@ class AuthController extends StateNotifier<bool> {
         joinedAt: DateTime.now(),
         pictureUrl: userCredentials.user!.photoURL!,
         totalPost: 0,
-        earnedPoint: 0,
-        pointsSpent: 0,
+        earnedPoint: 0.0,
+        pointsSpent: 0.0,
+        pendingPost: 0,
       );
       final saveDetails = await _userManagementAPI.saveContributorCredentials(
           wasteContributor: contributor);

@@ -58,7 +58,7 @@ DateTime parseDateString(String dateString) {
   int year = int.parse(dateAndTime[2]);
 
   String timeString = dateAndTime[3];
-  String meridiem = dateAndTime[4].toLowerCase();
+  String meridiem = dateAndTime[3].toLowerCase();
   List<String> timeComponents = timeString.split(':');
   int hour = int.parse(timeComponents[0]);
   int minute = int.parse(timeComponents[1]);

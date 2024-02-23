@@ -1,9 +1,11 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:waste_company/routes/route_path.dart';
 import 'package:waste_company/utils/loading_alert.dart';
@@ -23,6 +25,21 @@ class SignUpScreen extends StatefulHookConsumerWidget {
 
 class _SignUpViewState extends ConsumerState<SignUpScreen> {
   final formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    requestLocationPermission();
+    super.initState();
+  }
+
+  requestLocationPermission() async {
+    final permission = await Permission.location.serviceStatus;
+   
+    if (permission.isDisabled) {
+      await Geolocator.requestPermission();
+    } else {
+      return;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

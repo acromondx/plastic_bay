@@ -36,14 +36,14 @@ class DashBoardCard extends StatelessWidget {
         children: [
           DashBoardItems(
             title: 'Total Posts',
-            isDouble: false,
-            points: contributor.totalPost.toDouble(),
+           
+            points: contributor.totalPost,
             borderColor: AppColors.secondaryColor,
           ),
           DashBoardItems(
             title: 'Pending Posts',
-            isDouble: false,
-            points: contributor.totalPost.toDouble(),
+           
+            points: contributor.pendingPost,
             borderColor: AppColors.secondaryColor,
           ),
         ],
