@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:plastic_bay/api/local_database/isar_service.dart';
+import 'package:plastic_bay/features/rewards/controller/reward_controller.dart';
 import 'package:plastic_bay/features/user_management/controller/user_management_controller.dart';
 import 'package:plastic_bay/theme/app_color.dart';
+import 'package:plastic_bay/utils/toast_message.dart';
 
 import '../../../model/reward.dart';
 
@@ -21,18 +23,51 @@ class RewardDetails extends HookConsumerWidget {
         title: Text(reward.name),
       ),
       bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
           child: ElevatedButton(
               onPressed: () async {
-                ref.invalidate(contributorProfileDetailsProvider);
-                final cartList = ref.read(cartFutureProvider).value!;
-                for (final cartItem in cartList) {
-                  if (cartItem.rewardId == reward.rewardId) {
-                    reward.copyWith(
-                        quantity: cartItem.quantity +
-                            int.parse(quantityController.text));
+                bool exist = false;
+                Reward? inCartReward;
+                if (quantityController.text.isEmpty) {
+                  return showToastMessage('Quantity is required', context);
+                } else {
+                  int quantity = int.parse(quantityController.text);
+                  if (quantity > reward.quantity) {
+                    return showToastMessage(
+                        'Quantity is more than available', context);
+                  } else {
+                    final cartList = ref.read(cartFutureProvider).value!;
+                    for (final cartItem in cartList) {
+                      if (cartItem.rewardId == reward.rewardId) {
+                        inCartReward = cartItem;
+                        exist = true;
+                      } else {
+                        exist = false;
+                      }
+                    }
+                    if (exist) {
+                      await ref
+                          .read(isarProvider)
+                          .updateCart(
+                              reward: inCartReward!.copyWith(
+                                  quantity: inCartReward.quantity + quantity))
+                          .then((value) {
+                        ref.invalidate(cartFutureProvider);
+                        showToastMessage('Added to cart', context,
+                            isSuccess: true);
+                      });
+                    } else {
+                      await ref
+                          .read(isarProvider)
+                          .addToCart(
+                              reward: reward.copyWith(quantity: quantity))
+                          .then((value) {
+                        ref.invalidate(cartFutureProvider);
+                        showToastMessage('Added to cart', context,
+                            isSuccess: true);
+                      });
+                    }
                   }
-                  await ref.read(isarProvider).addToCart(reward: reward);
                 }
               },
               child: Text(
@@ -64,7 +99,7 @@ class RewardDetails extends HookConsumerWidget {
                   style: textTheme.titleMedium!.copyWith(
                     fontSize: 20,
                     color: Colors.black,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.bold,
                   )),
               const SizedBox(height: 10),
               Text(reward.description,
@@ -77,7 +112,7 @@ class RewardDetails extends HookConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Price ${reward.value.toString()}',
+                  Text('♻️ ${reward.value.toString()}',
                       style: textTheme.titleMedium!.copyWith(
                         fontSize: 17,
                         color: Theme.of(context).colorScheme.primary,
@@ -93,6 +128,8 @@ class RewardDetails extends HookConsumerWidget {
               ),
               const SizedBox(height: 50),
               TextField(
+                controller: quantityController,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),

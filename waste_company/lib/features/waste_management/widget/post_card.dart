@@ -171,7 +171,8 @@ class _PlasticPostCardState extends ConsumerState<PlasticPostCard> {
                                   contributorsId: widget.plastic.contributorId,
                                 )
                                 .then((value) {
-                              ref.invalidate(acceptedPlasticPostProvider(true));
+                              ref.invalidate(
+                                  acceptedPlasticPostProvider(false));
                               ref.invalidate(plasticPostProvider);
                             });
                           },

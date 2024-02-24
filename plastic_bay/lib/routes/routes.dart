@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:plastic_bay/features/authentication/screen/sign_up.dart';
 import 'package:plastic_bay/features/home/screens/home_page.dart';
-import 'package:plastic_bay/features/home/screens/welcome_page.dart';
 import 'package:plastic_bay/model/reward.dart';
 import 'package:plastic_bay/routes/route_path.dart';
 
 import '../features/authentication/screen/login.dart';
 import '../features/authentication/screen/auth_checker.dart';
 import '../features/plastic management/screen/create_post.dart';
+import '../features/rewards/screen/orders.dart';
 import '../features/rewards/screen/reward_details.dart';
+import '../features/rewards/screen/rewards_checkout.dart';
+import '../features/rewards/widget/order_sucess_card.dart';
 
 final GoRouter routeConfig = GoRouter(
   routes: <RouteBase>[
@@ -52,6 +54,21 @@ final GoRouter routeConfig = GoRouter(
       },
     ),
     GoRoute(
+      name: RoutePath.successfulOrder,
+      path: RoutePath.successfulOrder,
+      builder: (BuildContext context, GoRouterState state) {
+        return const SuccessfulOrder();
+      },
+    ),
+     GoRoute(
+      name: RoutePath.orderScreen,
+      path: RoutePath.orderScreen,
+      builder: (BuildContext context, GoRouterState state) {
+        return const OrdersScreen();
+      },
+    ),
+    
+    GoRoute(
       path: RoutePath.createPost,
       name: RoutePath.createPost,
       pageBuilder: (context, state) {
@@ -60,9 +77,23 @@ final GoRouter routeConfig = GoRouter(
           child: const CreatePost(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
-
-              opacity:
-                  CurveTween(curve: Curves.ease).animate(animation),
+              opacity: CurveTween(curve: Curves.easeIn).animate(animation),
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePath.rewardCheckOut,
+      name: RoutePath.rewardCheckOut,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const RewardsCheckOut(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: CurveTween(curve: Curves.easeIn).animate(animation),
               child: child,
             );
           },

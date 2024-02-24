@@ -1,12 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:plastic_bay/api/authentication/auth_interface.dart';
 import 'package:plastic_bay/api/core/api_failure.dart';
-import 'package:plastic_bay/api/core/app_signIn_setup.dart';
+
 import 'package:plastic_bay/api/core/either.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 //Authentication API for all auth services
 class AuthAPI implements AuthInterface {
@@ -18,20 +17,7 @@ class AuthAPI implements AuthInterface {
   @override
   FutureEither<UserCredential> appleSignIn() async {
     try {
-      // final rawNonce = generateNonceForSignUp();
-      // final nonce = sha256ofString(rawNonce);
-
-      // final appleCredential = await SignInWithApple.getAppleIDCredential(
-      //   scopes: [
-      //     AppleIDAuthorizationScopes.email,
-      //     AppleIDAuthorizationScopes.fullName,
-      //   ],
-      //   nonce: nonce,
-      // );
-      // final oauthCredential = OAuthProvider('apple.com').credential(
-      //   idToken: appleCredential.identityToken,
-      //   rawNonce: rawNonce,
-      // );
+    
       AppleAuthProvider appleProvider = AppleAuthProvider();
       appleProvider = appleProvider.addScope('email');
       appleProvider = appleProvider.addScope('name');

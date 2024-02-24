@@ -8,23 +8,26 @@ import 'point_earned.dart';
 
 class DashBoardCard extends StatelessWidget {
   final WasteContributor contributor;
-  const DashBoardCard({super.key, required this.contributor});
+  
+  const DashBoardCard({super.key, required this.contributor, });
 
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      PointEarnedCard(pointsRemaining: contributor.earnedPoint),
+      PointEarnedCard(pointsRemaining: contributor.earnedPoint.toDouble()),
       const SizedBox(height: 20),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           DashBoardItems(
             title: 'Points Earned',
+            isPoints: true,
             points: contributor.earnedPoint + contributor.pointsSpent,
             borderColor: AppColors.secondaryColor,
           ),
           DashBoardItems(
             title: 'Points Spent',
+            isPoints: true,
             points: contributor.pointsSpent,
             borderColor: Colors.redAccent,
           ),

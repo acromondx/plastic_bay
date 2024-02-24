@@ -29,7 +29,7 @@ final allPlasticPostFutureProvider = FutureProvider((ref) async {
   return ref.watch(plasticManagementControllerProvider.notifier).allPost;
 });
 
-final myPlasticPostFutureProvider = FutureProvider((ref) async {
+final myPlasticPostFutureProvider = FutureProvider.autoDispose((ref) async {
   return ref.watch(plasticManagementControllerProvider.notifier).myPost();
 });
 

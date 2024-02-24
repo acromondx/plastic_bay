@@ -26,14 +26,19 @@
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library to pick images</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera to take photos</string>
+
 	<key>NSLocationWhenInUseUsageDescription</key>
-<string>This app needs access to location when open.</string>
-<key>NSLocationAlwaysUsageDescription</key>
-<string>This app needs access to location when in the background.</string>
+	<string>This app needs access to location when open.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs access to location when in the background.</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>LSApplicationQueriesSchemes</key>
-<array>
+	<array>
     <string>comgooglemaps</string>
     <string>baidumap</string>
     <string>iosamap</string>
@@ -49,7 +54,7 @@
     <string>tomtomgo</string>
     <string>copilot</string>
     <string>com.sygic.aura</string>
-</array>
+	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

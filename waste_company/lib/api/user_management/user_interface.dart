@@ -7,5 +7,5 @@ abstract class UserManagementInterface {
     required String wasteCompanyId,
     required Map<String, dynamic> update,
   });
-  Future<WasteCompany> getCredentials({required String wasteCompanyId});
+  Future<WasteCompany> getCredentials();
 }

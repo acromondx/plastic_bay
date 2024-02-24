@@ -3,26 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:plastic_bay/model/reward.dart';
 import 'package:plastic_bay/theme/app_theme.dart';
 import 'api/local_database/isar_service.dart';
 import 'features/authentication/screen/sign_up.dart';
 import 'firebase_options.dart';
 import 'routes/routes.dart';
-import 'test_screens/myprofile.dart';
-import 'test_screens/reward_catalog.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // final dir = await getApplicationDocumentsDirectory();
-  // final isar = await Isar.open([], directory: dir.path);
-  runApp(const ProviderScope(
+  final dir = await getApplicationDocumentsDirectory();
+  final isar = await Isar.open([RewardSchema], directory: dir.path);
+  runApp(ProviderScope(
     overrides: [
-      // isarProvider.overrideWithValue(IsarServices(isar)),
+      isarProvider.overrideWithValue(IsarServices(isar)),
     ],
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 

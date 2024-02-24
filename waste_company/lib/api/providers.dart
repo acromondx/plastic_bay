@@ -33,7 +33,7 @@ final authApiProvider = Provider((ref) {
 });
 
 final userManagementApiProvider = Provider((ref) {
-  return UserManagementAPI(firestore: ref.watch(firebaseFirestoreProvider));
+  return UserManagementAPI(firestore: ref.watch(firebaseFirestoreProvider), auth: ref.watch(firebaseAuthProvider));
 });
 
 final plasticPostProvider = FutureProvider((ref) async {
@@ -69,6 +69,10 @@ final analyticsApiProvider = Provider((ref) {
 //   return StorageAPI(firebaseStorage: ref.watch(storageProvider));
 // })
 
-final analyticsFutureProvider = FutureProvider((ref) async {
+final analyticsFutureProvider = FutureProvider.autoDispose((ref) async {
   return ref.watch(analyticsApiProvider).getAnalytics();
+});
+
+final companyDetailsFutureProvider = FutureProvider((ref) {
+  return  ref.watch(userManagementApiProvider).getCredentials() ;
 });

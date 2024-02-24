@@ -90,10 +90,12 @@ class PlasticController extends StateNotifier<bool> {
         state = false;
         await _analyticsApi.updateAnalytics(
             update: {'acceptedPost': FieldValue.increment(-1)});
-        showToastMessage(
-          'Pick up cancelled',
-          context,
-        );
+        await _analyticsApi.updateAnalytics(
+            update: {'cancelledPost': FieldValue.increment(1)});
+        // showToastMessage(
+        //   'Pick up cancelled',
+        //   context,
+        // );
       });
     });
   }
@@ -104,7 +106,10 @@ class PlasticController extends StateNotifier<bool> {
     required BuildContext context,
   }) async {
     state = true;
-    final decreasePending = {'pendingPost': FieldValue.increment(-1)};
+    final updateContributorDetails = {
+      'pendingPost': FieldValue.increment(-1),
+      'earnedPoint': FieldValue.increment(10),
+    };
     final update = {
       'status': PlasticStatus.pickedUp.name,
     };
@@ -114,14 +119,20 @@ class PlasticController extends StateNotifier<bool> {
     plasticUpdate
         .fold((failure) => showToastMessage(failure.error.toString(), context),
             (r) async {
-      final coUpdate = await _wasteManagementAPI.updatePost(
-          plasticId: contributorsId, updateFields: decreasePending);
+      final coUpdate = await _wasteManagementAPI.updateContributorsAnalytics(
+        contributorsId: contributorsId,
+        updateFields: updateContributorDetails,
+      );
       coUpdate.fold(
           (failure) => showToastMessage(failure.error.toString(), context),
-          (r) {
-        _analyticsApi
-            .updateAnalytics(update: {'pickedUpPost': FieldValue.increment(1)});
-        showToastMessage('Picked up success', context, isSuccess: true);
+          (r) async {
+        await _analyticsApi.updateAnalytics(
+          update: {
+            'pickedUpPost': FieldValue.increment(1),
+            'pointsGiven': FieldValue.increment(10)
+          },
+        );
+        // showToastMessage('Picked up success', context, isSuccess: true);
       });
     });
   }

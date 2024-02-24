@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plastic_bay/api/providers.dart';
+import 'package:plastic_bay/features/authentication/screen/sign_up.dart';
 import 'package:plastic_bay/features/home/screens/home_page.dart';
-import 'package:plastic_bay/features/home/screens/welcome_page.dart';
 import 'package:plastic_bay/utils/loading_alert.dart';
 
 class AuthChecker extends ConsumerWidget {
@@ -15,7 +15,7 @@ class AuthChecker extends ConsumerWidget {
       body: ref.watch(authStateProvider).when(
           data: (user) {
             if (user == null) {
-              return const WelcomePage();
+              return const SignUpScreen();
             } else {
               return const HomePage();
             }

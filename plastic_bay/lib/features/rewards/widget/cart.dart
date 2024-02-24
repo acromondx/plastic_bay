@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:plastic_bay/api/local_database/isar_service.dart';
+import 'package:plastic_bay/routes/route_path.dart';
 import 'package:plastic_bay/theme/app_color.dart';
 
 class CartIcon extends ConsumerWidget {
@@ -8,82 +10,47 @@ class CartIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final cart = ref.watch(cartFutureProvider);
-    // return cart.when(data: (cart) {
-    // return Stack(
-    //   children: [
-    //     IconButton(
-    //       icon: const Icon(
-    //         Icons.shopping_cart,
-    //         color: AppColors.primaryColor,
-    //       ),
-    //       onPressed: () {},
-    //     ),
-    //     // Positioned(
-    //     //   right: 5,
-    //     //   top: 5,
-    //     //   child: Container(
-    //     //     padding: const EdgeInsets.all(2),
-    //     //     decoration: BoxDecoration(
-    //     //       color: Colors.red,
-    //     //       borderRadius: BorderRadius.circular(10),
-    //     //     ),
-    //     //     constraints: const BoxConstraints(
-    //     //       minWidth: 16,
-    //     //       minHeight: 16,
-    //     //     ),
-    //     //     //child:
-    //     //     // const Text(
-    //     //     //   '',
-    //     //     //   style: TextStyle(
-    //     //     //     color: Colors.white,
-    //     //     //     fontSize: 10,
-    //     //     //   ),
-    //     //     //   textAlign: TextAlign.center,
-    //     //     // ),
-    //     //   ),
-    //     // ),
-    //   ],
-    // );
-    // // }, error: (error, stackTrace) {
-    // //   return Text(error.toString());
-    // // }, loading: () {
-    // //   return const CircularProgressIndicator();
-    // // });
-
-    return Stack(
-      children: [
-        IconButton(
-          icon: const Icon(
-            Icons.shopping_cart,
-            color: AppColors.primaryColor,
+    final cartProvider = ref.watch(cartFutureProvider);
+    final textTheme = Theme.of(context).textTheme;
+    return cartProvider.when(data: (cartList) {
+      return Stack(
+        children: [
+          IconButton(
+            icon: const Icon(
+              Icons.shopping_cart,
+              color: AppColors.primaryColor,
+            ),
+            onPressed: () => context.pushNamed(RoutePath.rewardCheckOut),
           ),
-          onPressed: () {},
-        ),
-        // Positioned(
-        //   right: 5,
-        //   top: 5,
-        //   child: Container(
-        //     padding: const EdgeInsets.all(2),
-        //     decoration: BoxDecoration(
-        //       color: Colors.red,
-        //       borderRadius: BorderRadius.circular(10),
-        //     ),
-        //     constraints: const BoxConstraints(
-        //       minWidth: 16,
-        //       minHeight: 16,
-        //     ),
-        //     child: const Text(
-        //       '5',
-        //       style: TextStyle(
-        //         color: Colors.white,
-        //         fontSize: 10,
-        //       ),
-        //       textAlign: TextAlign.center,
-        //     ),
-        //   ),
-        // ),
-      ],
-    );
+          cartList.isEmpty
+              ? const SizedBox.shrink()
+              : Positioned(
+                  right: 5,
+                  top: 5,
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 16,
+                      minHeight: 16,
+                    ),
+                    child: Text(
+                      cartList.length.toString(),
+                      style: textTheme.displayMedium!
+                          .copyWith(fontSize: 12, color: AppColors.greyColor),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+        ],
+      );
+    }, error: (error, stackTrace) {
+      return Text(error.toString());
+    }, loading: () {
+      return const CircularProgressIndicator();
+    });
   }
 }

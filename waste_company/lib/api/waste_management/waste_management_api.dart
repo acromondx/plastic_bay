@@ -18,7 +18,8 @@ class WasteManagementAPI implements WasteManagementInterface {
   Future<List<Plastic>> getPlasticPost() async {
     final plasticCollection = await _firestore
         .collection('plastic_post')
-        .where('status', isNotEqualTo: 'accepted')
+        //.orderBy('postedAt', descending: true)
+        .where('status', isEqualTo: 'pending')
         .get();
     return plasticCollection.docs
         .map((e) => Plastic.fromMap(e.data()))
@@ -69,4 +70,6 @@ class WasteManagementAPI implements WasteManagementInterface {
       return left(Failure(error, stackTrace));
     }
   }
+
+ 
 }

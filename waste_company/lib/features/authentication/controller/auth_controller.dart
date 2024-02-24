@@ -79,6 +79,7 @@ class AuthController extends StateNotifier<bool> {
           pendingPost: 0,
           pickedUpPost: 0,
           pointsGiven: 0,
+          cancelledPost: 0,
         );
         _analyticsApi.saveAnalytics(analytics: analytics);
         state = false;

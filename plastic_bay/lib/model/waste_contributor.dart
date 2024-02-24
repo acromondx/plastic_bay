@@ -12,10 +12,10 @@ class WasteContributor {
   final GeoPoint contributorLocation;
   final DateTime joinedAt;
   final String pictureUrl;
-  final int totalPost;
-  final double earnedPoint;
-  final double pointsSpent;
-  final int pendingPost;
+  final num totalPost;
+  final num earnedPoint;
+  final num pointsSpent;
+  final num pendingPost;
   WasteContributor({
     required this.id,
     required this.name,
@@ -83,10 +83,10 @@ class WasteContributor {
       contributorLocation: (map['contributorLocation'] as GeoPoint),
       joinedAt: DateTime.fromMillisecondsSinceEpoch(map['joinedAt'] as int),
       pictureUrl: map['pictureUrl'] as String,
-      totalPost: map['totalPost'] as int,
-      earnedPoint: map['earnedPoint'] as double,
-      pointsSpent: map['pointsSpent'] as double,
-      pendingPost: map['pendingPost'] as int,
+      totalPost: map['totalPost'] as num,
+      earnedPoint: map['earnedPoint'] as num,
+      pointsSpent: map['pointsSpent'] as num,
+      pendingPost: map['pendingPost'] as num,
     );
   }
 

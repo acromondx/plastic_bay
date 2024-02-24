@@ -3,7 +3,9 @@
 import 'dart:convert';
 
 import 'package:isar/isar.dart';
-//part 'reward.g.dart';
+part 'reward.g.dart';
+
+@collection
 class Reward {
   Id ? id = Isar.autoIncrement;
  final String rewardId;

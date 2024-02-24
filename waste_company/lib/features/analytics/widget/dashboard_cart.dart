@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:waste_company/model/analytics.dart';
 
@@ -31,25 +30,22 @@ class DashBoardCard extends StatelessWidget {
         ],
       ),
       const SizedBox(height: 20),
-      // Row(
-      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //   children: [
-      //     DashBoardItems(
-      //       title: 'Total Posts',
-           
-      //       points: contributor.totalPost,
-      //       borderColor: AppColors.secondaryColor,
-      //     ),
-      //     DashBoardItems(
-      //       title: 'Pending Posts',
-           
-      //       points: contributor.pendingPost,
-      //       borderColor: AppColors.secondaryColor,
-      //     ),
-      //   ],
-      // ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          DashBoardItems(
+            title: 'Picked Ups',
+            points: analytics.pickedUpPost,
+            borderColor: AppColors.secondaryColor,
+          ),
+          DashBoardItems(
+            title: 'Cancelled Posts',
+            points: analytics.cancelledPost,
+            borderColor: Colors.redAccent,
+          ),
+        ],
+      ),
       const SizedBox(height: 20),
- 
     ]);
   }
 }

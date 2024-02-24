@@ -34,7 +34,7 @@ class UserManagementAPI implements UserManagementInterface {
         .collection('wasteContributors')
         .doc(wasteContributorId)
         .get();
-        print(details.data());
+      
     return WasteContributor.fromMap(details.data()!);
   }
 
@@ -79,7 +79,7 @@ class UserManagementAPI implements UserManagementInterface {
         .collection('wasteContributors')
         .where(
           'totalPost',
-          isGreaterThanOrEqualTo: 0,
+          isGreaterThanOrEqualTo: 0.0,
         )
         .orderBy('totalPost', descending: true)
         .limit(50)

@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:waste_company/api/core/fpdart.dart';
 import 'package:waste_company/api/user_management/user_interface.dart';
@@ -8,12 +10,15 @@ import '../core/api_failure.dart';
 
 class UserManagementAPI implements UserManagementInterface {
   final FirebaseFirestore _firestore;
-  UserManagementAPI({required FirebaseFirestore firestore})
-      : _firestore = firestore;
+  final FirebaseAuth _auth;
+  UserManagementAPI(
+      {required FirebaseFirestore firestore, required FirebaseAuth auth})
+      : _firestore = firestore,
+        _auth = auth;
   @override
-  Future<WasteCompany> getCredentials({required String wasteCompanyId}) async {
+  Future<WasteCompany> getCredentials() async {
     final credentials =
-        await _firestore.collection('wastecompany').doc(wasteCompanyId).get();
+        await _firestore.collection('wastecompany').doc(_auth.currentUser!.uid).get();
     return WasteCompany.fromMap(credentials.data()!);
   }
 

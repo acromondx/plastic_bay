@@ -59,6 +59,7 @@ class _SignUpViewState extends ConsumerState<SignUpScreen> {
     final authController = ref.watch(authControllerProvider.notifier);
     final authControllerState = ref.watch(authControllerProvider);
     return SafeArea(
+     top: false,
       child: Scaffold(
         bottomNavigationBar: authControllerState
             ? const SizedBox.shrink()
@@ -90,10 +91,11 @@ class _SignUpViewState extends ConsumerState<SignUpScreen> {
                       key: formKey,
                       child: Column(
                         children: [
-                          // Text('Register Now Let\'s make the world plastic free!',
-                          //     style: textTheme.titleLarge!.copyWith(
-                          //       fontWeight: FontWeight.bold,
-                          //     )),
+                           Text('Sign Up',
+                            style: textTheme.displayLarge!.copyWith(
+                              color: AppColors.primaryColor,
+                              fontSize: 30,
+                            )),
                           const SizedBox(
                             height: 10,
                           ),

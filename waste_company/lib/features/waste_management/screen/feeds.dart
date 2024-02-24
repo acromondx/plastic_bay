@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:waste_company/api/providers.dart';
 import 'package:waste_company/features/waste_management/widget/post_card.dart';
 
-import '../../../model/analytics.dart';
 import '../../../utils/loading_alert.dart';
 
 class Feeds extends ConsumerWidget {
@@ -18,7 +17,6 @@ class Feeds extends ConsumerWidget {
       child: RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(plasticPostProvider);
-         
         },
         child: post.when(
           data: (posts) {

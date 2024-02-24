@@ -29,7 +29,7 @@ class PointEarnedCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Text(pointsRemaining.toString(),
+            Text('♻️ $pointsRemaining',
                 style: textTheme.titleLarge!.copyWith(
                   fontSize: 26,
                   color: Theme.of(context).colorScheme.primary,

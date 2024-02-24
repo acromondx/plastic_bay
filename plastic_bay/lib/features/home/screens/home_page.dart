@@ -5,9 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:plastic_bay/constants/ui/svgs.dart';
 import 'package:plastic_bay/features/authentication/controler/auth_controller.dart';
 import 'package:plastic_bay/routes/route_path.dart';
-
-import '../../../common/bottom_bar_icons.dart';
 import '../../../constants/constants.dart';
+import '../../../utils/custom_icon.dart';
 import '../../rewards/widget/cart.dart';
 
 class HomePage extends HookConsumerWidget {

@@ -9,6 +9,8 @@ import 'package:plastic_bay/api/rewards/reward_api.dart';
 import 'package:plastic_bay/api/storage_bucket/storage_api.dart';
 import 'package:plastic_bay/api/user_management/user_api.dart';
 
+import 'local_database/isar_service.dart';
+
 final firebaseAuthProvider = Provider((ref) {
   return FirebaseAuth.instance;
 });
@@ -24,7 +26,7 @@ final storageProvider = Provider((ref) {
   return FirebaseStorage.instance;
 });
 
-final authStateProvider = StreamProvider((ref)  {
+final authStateProvider = StreamProvider((ref) {
   return ref.watch(authApiProvider).authStateChanges;
 });
 final authApiProvider = Provider((ref) {
@@ -47,4 +49,8 @@ final rewardApiProvider = Provider((ref) {
 
 final storageApiProvider = Provider((ref) {
   return StorageAPI(firebaseStorage: ref.watch(storageProvider));
+});
+
+final contributorsOrderProvider = FutureProvider((ref) async {
+  return ref.watch(rewardApiProvider).getOrders();
 });

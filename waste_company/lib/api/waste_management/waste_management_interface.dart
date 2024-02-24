@@ -12,4 +12,5 @@ abstract class WasteManagementInterface {
     required String contributorsId,
     required Map<String, dynamic> updateFields,
   });
+
 }

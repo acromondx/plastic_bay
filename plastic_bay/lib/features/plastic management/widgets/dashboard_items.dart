@@ -6,12 +6,14 @@ class DashBoardItems extends StatelessWidget {
   final String title;
   final num points;
   final Color borderColor;
+  final bool isPoints;
  
   const DashBoardItems({
     super.key,
     required this.title,
     required this.points,
     required this.borderColor,
+    this.isPoints=false,
     
   });
 
@@ -40,7 +42,7 @@ class DashBoardItems extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Text(points.toString(),
+            Text( isPoints?'♻️ $points': points.toString(),
                 style: textTheme.titleLarge!.copyWith(
                   fontSize: 24,
                   color: Theme.of(context).colorScheme.primary,

@@ -5,4 +5,8 @@ class RoutePath {
   static const String home = '/home';
   static const String rewardDetails = '/rewardDetails';
   static const String createPost = '/createPost';
+  static const String rewardCheckOut = '/rewardCheckOut';
+ static const String successfulOrder = '/successfulOrder';
+ static const String orderScreen = '/orderScreen';
+
 }

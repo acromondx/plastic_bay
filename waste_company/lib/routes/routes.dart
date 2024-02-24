@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:waste_company/features/authentication/screen/sign_up.dart';
+import 'package:waste_company/features/profile/screen/profile.dart';
 import 'package:waste_company/features/waste_management/screen/check_out.dart';
 import 'package:waste_company/model/plastic.dart';
 
@@ -49,23 +50,21 @@ final GoRouter routeConfig = GoRouter(
         );
       },
     ),
-    // GoRoute(
-    //   path: RoutePath.createPost,
-    //   name: RoutePath.createPost,
-    //   pageBuilder: (context, state) {
-    //     return CustomTransitionPage(
-    //       key: state.pageKey,
-    //       child: const CreatePost(),
-    //       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-    //         return FadeTransition(
-
-    //           opacity:
-    //               CurveTween(curve: Curves.ease).animate(animation),
-    //           child: child,
-    //         );
-    //       },
-    //     );
-    //   },
-    // ),
+    GoRoute(
+      path: RoutePath.profile,
+      name: RoutePath.profile,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const ProfilePage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: CurveTween(curve: Curves.ease).animate(animation),
+              child: child,
+            );
+          },
+        );
+      },
+    ),
   ],
 );

@@ -7,12 +7,14 @@ class Analytics {
   final int pendingPost;
   final int pickedUpPost;
   final double pointsGiven;
+  final int cancelledPost;
   Analytics({
     required this.id,
     required this.acceptedPost,
     required this.pendingPost,
     required this.pickedUpPost,
     required this.pointsGiven,
+    required this.cancelledPost,
   });
 
   Analytics copyWith({
@@ -21,6 +23,7 @@ class Analytics {
     int? pendingPost,
     int? pickedUpPost,
     double? pointsGiven,
+    int? cancelledPost,
   }) {
     return Analytics(
       id: id ?? this.id,
@@ -28,6 +31,7 @@ class Analytics {
       pendingPost: pendingPost ?? this.pendingPost,
       pickedUpPost: pickedUpPost ?? this.pickedUpPost,
       pointsGiven: pointsGiven ?? this.pointsGiven,
+      cancelledPost: cancelledPost ?? this.cancelledPost,
     );
   }
 
@@ -38,6 +42,7 @@ class Analytics {
       'pendingPost': pendingPost,
       'pickedUpPost': pickedUpPost,
       'pointsGiven': pointsGiven,
+      'cancelledPost': cancelledPost,
     };
   }
 
@@ -48,6 +53,7 @@ class Analytics {
       pendingPost: map['pendingPost'] as int,
       pickedUpPost: map['pickedUpPost'] as int,
       pointsGiven: map['pointsGiven'] as double,
+      cancelledPost: map['cancelledPost'] as int,
     );
   }
 
@@ -57,7 +63,7 @@ class Analytics {
 
   @override
   String toString() {
-    return 'Analytics(id: $id, acceptedPost: $acceptedPost, pendingPost: $pendingPost, pickedUpPost: $pickedUpPost, pointsGiven: $pointsGiven)';
+    return 'Analytics(id: $id, acceptedPost: $acceptedPost, pendingPost: $pendingPost, pickedUpPost: $pickedUpPost, pointsGiven: $pointsGiven, cancelledPost: $cancelledPost)';
   }
 
   @override
@@ -69,7 +75,8 @@ class Analytics {
       other.acceptedPost == acceptedPost &&
       other.pendingPost == pendingPost &&
       other.pickedUpPost == pickedUpPost &&
-      other.pointsGiven == pointsGiven;
+      other.pointsGiven == pointsGiven &&
+      other.cancelledPost == cancelledPost;
   }
 
   @override
@@ -78,6 +85,7 @@ class Analytics {
       acceptedPost.hashCode ^
       pendingPost.hashCode ^
       pickedUpPost.hashCode ^
-      pointsGiven.hashCode;
+      pointsGiven.hashCode ^
+      cancelledPost.hashCode;
   }
 }

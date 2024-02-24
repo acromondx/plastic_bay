@@ -201,7 +201,6 @@ class AuthController extends StateNotifier<bool> {
       state = false;
       showToastMessage(failure.error.toString(), context);
     }, (userCredentials) {
-      ///Save user details in db after successful signIn
       state = false;
     });
   }
@@ -214,7 +213,6 @@ class AuthController extends StateNotifier<bool> {
       state = false;
       showToastMessage(failure.error.toString(), context);
     }, (userCredentials) {
-      ///Save user details in db after successful signIn
       state = false;
     });
   }

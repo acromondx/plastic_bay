@@ -45,9 +45,9 @@ class ContributorsCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      '${contributor.earnedPoint}',
+                      '♻️${contributor.earnedPoint + contributor.pointsSpent}',
                       style: textTheme.titleMedium!.copyWith(
-                        color: AppColors.secondaryColor,
+                        color: AppColors.primaryColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
                       ),

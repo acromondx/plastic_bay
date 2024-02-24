@@ -19,80 +19,87 @@ class SignInScreen extends StatefulHookConsumerWidget {
 }
 
 class _SignInScreenState extends ConsumerState<SignInScreen> {
-    final formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final textTheme = Theme.of(context).textTheme;
     final authController = ref.watch(authControllerProvider.notifier);
-   
+
     final authControllerState = ref.watch(authControllerProvider);
     return SafeArea(
+      top: false,
       child: Scaffold(
-        bottomNavigationBar:authControllerState
+        bottomNavigationBar: authControllerState
             ? const SizedBox.shrink()
             : Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SocialSignInButton(
-                isGoogle: true,
-                onPressed: () => authController.googleSignIn(context),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SocialSignInButton(
+                      isGoogle: true,
+                      onPressed: () => authController.googleSignIn(context),
+                    ),
+                    const SizedBox(width: 10),
+                    SocialSignInButton(
+                      isGoogle: false,
+                      onPressed: () => authController.googleSignIn(context),
+                    )
+                  ],
+                ),
               ),
-              const SizedBox(width: 10),
-              SocialSignInButton(
-                isGoogle: false,
-                onPressed: () => authController.googleSignIn(context),
-              )
-            ],
-          ),
-        ),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: authControllerState
                 ? const LoadingIndicator()
                 : SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    CustomAuthField(
-                      controller: emailController,
-                      hintText: 'Email',
-                      leadingSvg: AppSvg.mailLight,
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          CustomAuthField(
+                            controller: emailController,
+                            hintText: 'Email',
+                            leadingSvg: AppSvg.mailLight,
+                          ),
+                          CustomAuthField(
+                            controller: passwordController,
+                            hintText: 'Password',
+                            leadingSvg: AppSvg.userBold,
+                          ),
+                          const SizedBox(height: 40),
+                          AuthButton(
+                            title: 'SignIn',
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                authController.signIn(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                    context: context);
+                              }
+                            },
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Not a contributor? ',
+                                  style: textTheme.displaySmall!.copyWith(
+                                      color: AppColors.secondaryColor)),
+                              TextButton(
+                                  onPressed: () =>
+                                      context.goNamed(RoutePath.signUp),
+                                  child: Text('Sign Up',
+                                      style: textTheme.displaySmall))
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                    CustomAuthField(
-                      controller: passwordController,
-                      hintText: 'Password',
-                      leadingSvg: AppSvg.userBold,
-                    ),
-                    const SizedBox(height: 40),
-                    AuthButton(
-                      title: 'SignIn',
-                      onPressed: () {
-                         if(formKey.currentState!.validate()){
-                           authController.signIn(email: emailController.text, password:passwordController.text , context: context);
-                         }  
-                      },
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Not a contributor? ',
-                            style: textTheme.displaySmall!
-                                .copyWith(color: AppColors.secondaryColor)),
-                        TextButton(
-                            onPressed: () => context.goNamed(RoutePath.signUp),
-                            child: Text('Sign Up', style: textTheme.displaySmall))
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
+                  ),
           ),
         ),
       ),

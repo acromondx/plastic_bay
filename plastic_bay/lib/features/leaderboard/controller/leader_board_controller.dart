@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plastic_bay/api/providers.dart';
-import 'package:plastic_bay/api/user_management/user_api.dart';
-import 'package:plastic_bay/model/waste_contributor.dart';
+
 
 // class LeaderBoardController extends StateNotifier<bool> {
 //   final UserManagementAPI _userManagementAPI;
@@ -13,6 +12,6 @@ import 'package:plastic_bay/model/waste_contributor.dart';
 //       await _userManagementAPI.topContributors();
 // }
 
-final topContributorsProvider = FutureProvider((ref) async {
+final topContributorsProvider = FutureProvider.autoDispose((ref) async {
   return ref.watch(userManagementApiProvider).topContributors() ;
 });

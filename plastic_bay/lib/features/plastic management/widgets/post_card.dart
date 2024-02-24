@@ -18,17 +18,7 @@ class PlasticPostCard extends StatefulWidget {
 }
 
 class _PlasticPostCardState extends State<PlasticPostCard> {
-  String address = '';
-  @override
-  void initState() {
-    getStreetAddress(widget.plastic.location).then((value) {
-      setState(() {
-        address = value;
-      });
-    });
-    super.initState();
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -59,13 +49,9 @@ class _PlasticPostCardState extends State<PlasticPostCard> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const Icon(
-                    Icons.location_on,
-                    color: AppColors.primaryColor,
-                  ),
-                  Text(address),
-                  const Spacer(),
+             
                   Chip(
                       side: BorderSide(color: AppColors.secondaryColor),
                       backgroundColor:
