@@ -3,11 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plastic_bay/features/plastic%20management/controller/plastic_management_controller.dart';
 import 'package:plastic_bay/features/plastic%20management/widgets/dashboard_card.dart';
 import 'package:plastic_bay/utils/loading_alert.dart';
-
-import '../../../theme/app_color.dart';
 import '../../user_management/controller/user_management_controller.dart';
-import '../widgets/dashboard_items.dart';
-import '../widgets/point_earned.dart';
 import '../widgets/post_card.dart';
 
 class DashBoard extends ConsumerWidget {

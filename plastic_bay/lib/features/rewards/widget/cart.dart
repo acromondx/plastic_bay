@@ -16,12 +16,12 @@ class CartIcon extends ConsumerWidget {
       return Stack(
         children: [
           IconButton(
-            icon: const Icon(
-              Icons.shopping_cart,
-              color: AppColors.primaryColor,
-            ),
-            onPressed: () => context.pushNamed(RoutePath.rewardCheckOut),
-          ),
+              icon: const Icon(
+                Icons.shopping_cart,
+                color: AppColors.primaryColor,
+              ),
+              onPressed: () => context.pushNamed(RoutePath.rewardCheckOut),
+              ),
           cartList.isEmpty
               ? const SizedBox.shrink()
               : Positioned(

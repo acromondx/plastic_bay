@@ -5,14 +5,22 @@ import 'package:plastic_bay/theme/app_color.dart';
 class CustomIcon extends StatelessWidget {
   final String assetName;
   final bool isActive;
+  final bool noColor;
   const CustomIcon(
-      {super.key, required this.assetName, required this.isActive});
+      {super.key,
+      required this.assetName,
+      required this.isActive,
+      this.noColor = false});
 
   @override
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       assetName,
-      color: isActive ? AppColors.primaryColor : Colors.black,
+      color: noColor
+          ? null
+          : isActive
+              ? AppColors.primaryColor
+              : Colors.black,
       width: 25,
       height: 25,
     );

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:plastic_bay/features/authentication/screen/sign_up.dart';
+import 'package:plastic_bay/features/gemini/screen/chat.dart';
 import 'package:plastic_bay/features/home/screens/home_page.dart';
+import 'package:plastic_bay/features/rewards/screen/order_detail.dart';
 import 'package:plastic_bay/model/reward.dart';
 import 'package:plastic_bay/routes/route_path.dart';
 
@@ -60,14 +62,30 @@ final GoRouter routeConfig = GoRouter(
         return const SuccessfulOrder();
       },
     ),
-     GoRoute(
+    GoRoute(
       name: RoutePath.orderScreen,
       path: RoutePath.orderScreen,
       builder: (BuildContext context, GoRouterState state) {
         return const OrdersScreen();
       },
     ),
-    
+    GoRoute(
+      name: RoutePath.orderDetailsScreen,
+      path: RoutePath.orderDetailsScreen,
+      builder: (BuildContext context, GoRouterState state) {
+        final rewards = state.extra as List<Reward>;
+        return OrderDetailsScreen(
+          rewards: rewards,
+        );
+      },
+    ),
+    GoRoute(
+      name: RoutePath.geminiChat,
+      path: RoutePath.geminiChat,
+      builder: (BuildContext context, GoRouterState state) {
+        return const GeminiChat();
+      },
+    ),
     GoRoute(
       path: RoutePath.createPost,
       name: RoutePath.createPost,

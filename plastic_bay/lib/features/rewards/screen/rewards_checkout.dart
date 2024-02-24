@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:plastic_bay/features/rewards/widget/check_out_card.dart';
 import 'package:plastic_bay/features/user_management/controller/user_management_controller.dart';
-import 'package:plastic_bay/routes/route_path.dart';
 import 'package:plastic_bay/theme/app_color.dart';
 import 'package:plastic_bay/utils/loading_alert.dart';
 import 'package:plastic_bay/utils/toast_message.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plastic_bay/features/leaderboard/widgets/top_contributors_card.dart';
 import 'package:plastic_bay/model/waste_contributor.dart';
 
 import '../../../theme/app_color.dart';

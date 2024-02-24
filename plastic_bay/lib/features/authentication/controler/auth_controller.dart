@@ -9,7 +9,6 @@ import 'package:plastic_bay/api/providers.dart';
 import 'package:plastic_bay/api/storage_bucket/storage_api.dart';
 import 'package:plastic_bay/api/user_management/user_api.dart';
 
-import 'package:plastic_bay/features/authentication/controler/auth_state.dart';
 import 'package:plastic_bay/model/waste_contributor.dart';
 import 'package:plastic_bay/routes/route_path.dart';
 import 'package:plastic_bay/utils/toast_message.dart';

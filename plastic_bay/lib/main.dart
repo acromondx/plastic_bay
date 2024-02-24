@@ -6,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:plastic_bay/model/reward.dart';
 import 'package:plastic_bay/theme/app_theme.dart';
 import 'api/local_database/isar_service.dart';
-import 'features/authentication/screen/sign_up.dart';
 import 'firebase_options.dart';
 import 'routes/routes.dart';
 

@@ -3,9 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:plastic_bay/constants/ui/svgs.dart';
-import 'package:plastic_bay/features/authentication/controler/auth_controller.dart';
 import 'package:plastic_bay/routes/route_path.dart';
 import '../../../constants/constants.dart';
+import '../../../theme/app_color.dart';
 import '../../../utils/custom_icon.dart';
 import '../../rewards/widget/cart.dart';
 
@@ -16,6 +16,23 @@ class HomePage extends HookConsumerWidget {
     final currentIndex = useState(0);
     return Scaffold(
         appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+            child: GestureDetector(
+              onTap: () => context.pushNamed(RoutePath.geminiChat),
+              child: Container(
+                height: 30,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: AppColors.secondaryColor.withOpacity(0.3)),
+                child: const CustomIcon(
+                  assetName: AppSvg.gemini,
+                  isActive: true,
+                  noColor: true,
+                ),
+              ),
+            ),
+          ),
           title: const Text('Plastic Bay'),
           actions: const [CartIcon()],
         ),

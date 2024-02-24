@@ -1,4 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:plastic_bay/features/plastic%20management/widgets/carousel_image.dart';
 import 'package:plastic_bay/model/plastic.dart';
@@ -7,7 +7,7 @@ import 'package:plastic_bay/theme/app_color.dart';
 
 import '../../../utils/enums/post_status.dart';
 import '../../../utils/extensions/date_format.dart';
-import '../../../utils/reuseables.dart';
+
 
 class PlasticPostCard extends StatefulWidget {
   final Plastic plastic;

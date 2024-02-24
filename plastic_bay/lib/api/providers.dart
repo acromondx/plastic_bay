@@ -9,7 +9,6 @@ import 'package:plastic_bay/api/rewards/reward_api.dart';
 import 'package:plastic_bay/api/storage_bucket/storage_api.dart';
 import 'package:plastic_bay/api/user_management/user_api.dart';
 
-import 'local_database/isar_service.dart';
 
 final firebaseAuthProvider = Provider((ref) {
   return FirebaseAuth.instance;

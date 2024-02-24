@@ -5,7 +5,6 @@ import 'package:waste_company/features/home/home_page.dart';
 import 'package:waste_company/utils/loading_alert.dart';
 
 import '../../../api/providers.dart';
-import '../../home/welcome.dart';
 
 class AuthChecker extends ConsumerWidget {
   const AuthChecker({super.key});

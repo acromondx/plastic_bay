@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:waste_company/api/providers.dart';
-import 'package:waste_company/model/analytics.dart';
 import 'package:waste_company/utils/loading_alert.dart';
 
 import '../widget/dashboard_cart.dart';

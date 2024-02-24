@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:waste_company/api/authentication/auth_interface.dart';
 import 'package:waste_company/api/core/fpdart.dart';
-import 'package:waste_company/model/waste_company.dart';
 
 import '../core/api_failure.dart';
 

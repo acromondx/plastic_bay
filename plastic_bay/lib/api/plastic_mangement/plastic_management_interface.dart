@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:plastic_bay/api/core/either.dart';
-import 'package:plastic_bay/utils/enums/post_status.dart';
 import 'package:plastic_bay/model/plastic.dart';
 
 abstract class PlasticManagementInterface {
