@@ -11,7 +11,7 @@ class Plastic {
   final DateTime postedAt;
   final String pickUpDate;
   final String pickUpTime;
-  final GeoPoint location;
+  final GeoFirePointModel geoFirePoint;
   final PlasticStatus status;
   final PlasticType plasticType;
   final String contributorId;
@@ -24,7 +24,7 @@ class Plastic {
     required this.postedAt,
     required this.pickUpDate,
     required this.pickUpTime,
-    required this.location,
+    required this.geoFirePoint,
     required this.status,
     required this.plasticType,
     required this.contributorId,
@@ -39,7 +39,7 @@ class Plastic {
     DateTime? postedAt,
     String? pickUpDate,
     String? pickUpTime,
-    GeoPoint? location,
+    GeoFirePointModel? geoFirePoint,
     PlasticStatus? status,
     PlasticType? plasticType,
     String? contributorId,
@@ -53,7 +53,7 @@ class Plastic {
       postedAt: postedAt ?? this.postedAt,
       pickUpDate: pickUpDate ?? this.pickUpDate,
       pickUpTime: pickUpTime ?? this.pickUpTime,
-      location: location ?? this.location,
+      geoFirePoint: geoFirePoint ?? this.geoFirePoint,
       status: status ?? this.status,
       plasticType: plasticType ?? this.plasticType,
       contributorId: contributorId ?? this.contributorId,
@@ -70,7 +70,7 @@ class Plastic {
       'postedAt': postedAt.millisecondsSinceEpoch,
       'pickUpDate': pickUpDate,
       'pickUpTime': pickUpTime,
-      'location': location,
+      'geoFirePoint': geoFirePoint.toJson(),
       'status': status.name,
       'plasticType': plasticType.name,
       'contributorId': contributorId,
@@ -87,7 +87,7 @@ class Plastic {
       postedAt: DateTime.fromMillisecondsSinceEpoch(map['postedAt'] as int),
       pickUpDate: map['pickUpDate'] as String,
       pickUpTime: map['pickUpTime'] as String,
-      location: (map['location'] as GeoPoint),
+      geoFirePoint:GeoFirePointModel.fromJson(map['geoFirePoint']),
       status: plasticFromStringToStatus(map['status']),
       plasticType: plasticFromStringToType(map['plasticType']),
       contributorId: map['contributorId'] as String,
@@ -106,7 +106,7 @@ class Plastic {
 
   @override
   String toString() {
-    return 'Plastic(postedAt: $postedAt, pickUpDate: $pickUpDate, pickUpTime: $pickUpTime, location: $location, status: $status, plasticType: $plasticType, contributorId: $contributorId, plasticId: $plasticId, description: $description, quantity: $quantity, acceptedCompanyId: $acceptedCompanyId, imageUrl: $imageUrl)';
+    return 'Plastic(postedAt: $postedAt, pickUpDate: $pickUpDate, pickUpTime: $pickUpTime, geoFirePoint: $geoFirePoint, status: $status, plasticType: $plasticType, contributorId: $contributorId, plasticId: $plasticId, description: $description, quantity: $quantity, acceptedCompanyId: $acceptedCompanyId, imageUrl: $imageUrl)';
   }
 
   @override
@@ -117,7 +117,7 @@ class Plastic {
     return other.postedAt == postedAt &&
         other.pickUpDate == pickUpDate &&
         other.pickUpTime == pickUpTime &&
-        other.location == location &&
+        other.geoFirePoint == geoFirePoint &&
         other.status == status &&
         other.plasticType == plasticType &&
         other.contributorId == contributorId &&
@@ -133,7 +133,7 @@ class Plastic {
     return postedAt.hashCode ^
         pickUpDate.hashCode ^
         pickUpTime.hashCode ^
-        location.hashCode ^
+        geoFirePoint.hashCode ^
         status.hashCode ^
         plasticType.hashCode ^
         contributorId.hashCode ^
@@ -143,4 +143,25 @@ class Plastic {
         acceptedCompanyId.hashCode ^
         imageUrl.hashCode;
   }
+}
+
+
+class GeoFirePointModel {
+  GeoFirePointModel({
+    required this.geohash,
+    required this.geopoint,
+  });
+
+  factory GeoFirePointModel.fromJson(Map<String, dynamic> json) => GeoFirePointModel(
+        geohash: json['geohash'] as String,
+        geopoint: json['geopoint'] as GeoPoint,
+      );
+
+  final String geohash;
+  final GeoPoint geopoint;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'geohash': geohash,
+        'geopoint': geopoint,
+      };
 }

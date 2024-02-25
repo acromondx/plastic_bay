@@ -17,7 +17,8 @@ class HomePage extends HookConsumerWidget {
         title: const Text('Plastic Bay'),
         actions: [
           IconButton(
-              onPressed: () => context.pushNamed(RoutePath.profile),
+              onPressed: () => 
+              context.pushNamed(RoutePath.profile),
               icon: const Icon(
                 Icons.person_2,
                 color: AppColors.primaryColor,

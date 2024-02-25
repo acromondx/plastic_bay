@@ -20,10 +20,20 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleURLSchemes</key>
-	<array>
-	<string>com.googleusercontent.apps.659144113173-altgu2d2uj7gj1muf7rsaf6nujjtup97</string>
-	</array>
+	<key>GIDClientID</key>
+<string>39834759866-8blebbue85j98lpqna94p0bo6ahtmalp.apps.googleusercontent.com</string>
+<key>CFBundleURLTypes</key>
+<array>
+	<dict>
+		<key>CFBundleTypeRole</key>
+		<string>Editor</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<string>com.googleusercontent.apps.39834759866-8blebbue85j98lpqna94p0bo6ahtmalp</string>
+		</array>
+	</dict>
+</array>
+
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>

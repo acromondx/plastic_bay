@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geoflutterfire_plus/geoflutterfire_plus.dart';
 import 'package:go_router/go_router.dart';
 import 'package:plastic_bay/api/authentication/auth_api.dart';
 import 'package:plastic_bay/api/plastic_mangement/pastic_management_api.dart';
@@ -53,8 +54,7 @@ class PlasticManagementController extends StateNotifier<bool> {
     required PlasticType plasticType,
     required double quantity,
     required List<String> imagePath,
-    required String pickUpDate,
-    required String pickUpTime,
+
     required BuildContext context,
   }) async {
     state = true;
@@ -69,11 +69,15 @@ class PlasticManagementController extends StateNotifier<bool> {
       imageUrls.add(imageUrl);
     }
     final geoPoint = await Geolocator.getCurrentPosition();
+    final GeoFirePoint geoFirePoint =
+        GeoFirePoint(GeoPoint(geoPoint.latitude, geoPoint.longitude));
     Plastic plastic = Plastic(
       postedAt: DateTime.now(),
-      pickUpDate: pickUpDate,
-      pickUpTime: pickUpTime,
-      location: GeoPoint(geoPoint.latitude, geoPoint.longitude),
+      pickUpDate: '',
+      pickUpTime: '',
+      geoFirePoint: GeoFirePointModel(
+          geohash: geoFirePoint.data['geohash'],
+          geopoint: geoFirePoint.data['geopoint']),
       status: PlasticStatus.pending,
       plasticType: plasticType,
       contributorId: _authAPI.currentUser.uid,

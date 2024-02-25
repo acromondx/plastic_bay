@@ -5,7 +5,6 @@ import 'package:geolocator/geolocator.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import 'package:waste_company/routes/route_path.dart';
 import 'package:waste_company/utils/loading_alert.dart';
@@ -32,13 +31,7 @@ class _SignUpViewState extends ConsumerState<SignUpScreen> {
   }
 
   requestLocationPermission() async {
-    final permission = await Permission.location.serviceStatus;
-   
-    if (permission.isDisabled) {
-      await Geolocator.requestPermission();
-    } else {
-      return;
-    }
+    await Geolocator.requestPermission();
   }
 
   @override

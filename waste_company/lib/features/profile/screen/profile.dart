@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:waste_company/features/profile/widgets/profile_tile.dart';
+import 'package:waste_company/routes/route_path.dart';
 import 'package:waste_company/utils/reuseables.dart';
 
 import '../../../api/providers.dart';
+import '../../authentication/controller/auth_controller.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -17,12 +20,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   void initState() {
     super.initState();
-   
-  
   }
-  
+
   @override
-  Widget build(BuildContext context, ) {
+  Widget build(
+    BuildContext context,
+  ) {
     final detailProvider = ref.watch(companyDetailsFutureProvider);
     return Scaffold(
         appBar: AppBar(
@@ -31,12 +34,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         body: Padding(
             padding: const EdgeInsets.all(12),
             child: detailProvider.when(data: (details) {
-               getStreetAddress(details.location).then((value) {
+              getStreetAddress(details.location).then((value) {
                 setState(() {
                   address = value;
-                
                 });
-               });
+              });
               return Column(
                 children: [
                   ProfileItemTile(
@@ -51,9 +53,19 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     content: details.phoneNumber.toString(),
                     title: 'Phone',
                   ),
-                    ProfileItemTile(
+                  ProfileItemTile(
                     content: address,
                     title: 'Address',
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      ref
+                          .read(authControllerProvider.notifier)
+                          .signOut()
+                          .then((value) => context.pushNamed(RoutePath.signUp));
+                    },
+                    child: const Text('Sign Out',
+                        style: TextStyle(color: Colors.red)),
                   ),
                 ],
               );

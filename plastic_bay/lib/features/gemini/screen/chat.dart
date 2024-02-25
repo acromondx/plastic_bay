@@ -55,7 +55,6 @@ class _GeminiChatState extends ConsumerState<GeminiChat> {
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: ListView.builder(
-            reverse: true,
             itemCount: chatHistory.length,
             itemBuilder: (context, index) {
               return MessageCard(

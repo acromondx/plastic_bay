@@ -16,6 +16,7 @@ Future<void> main() async {
   );
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open([RewardSchema], directory: dir.path);
+
   runApp(ProviderScope(
     overrides: [
       isarProvider.overrideWithValue(IsarServices(isar)),

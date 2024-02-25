@@ -5,7 +5,12 @@ import 'package:intl/intl.dart';
 
 Future<String> pickImage() async {
   final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  return image!.path;
+  if(image==null){
+    return '';
+  }else{
+  return image.path;
+
+  }
 }
 
 Future<String> getStreetAddress(GeoPoint point) async {

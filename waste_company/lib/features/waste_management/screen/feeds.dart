@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:waste_company/api/providers.dart';
@@ -19,13 +18,29 @@ class Feeds extends ConsumerWidget {
           ref.invalidate(plasticPostProvider);
         },
         child: post.when(
+          skipLoadingOnRefresh: false,
           data: (posts) {
-            return ListView.builder(
-                itemCount: posts.length,
-                itemBuilder: (context, index) {
-                  final post = posts[index];
-                  return PlasticPostCard(plastic: post);
-                });
+            return posts.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                            'No post found in 24km in your current location.'),
+                        TextButton(
+                            onPressed: () {
+                              ref.invalidate(plasticPostProvider);
+                            },
+                            child: const Text('Refresh'))
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: posts.length,
+                    itemBuilder: (context, index) {
+                      final post = posts[index];
+                      return PlasticPostCard(plastic: post);
+                    });
           },
           error: (error, stackTrace) => Center(child: Text(error.toString())),
           loading: () => const LoadingIndicator(),

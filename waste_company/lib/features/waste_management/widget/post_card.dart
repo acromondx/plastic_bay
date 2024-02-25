@@ -30,7 +30,7 @@ class _PlasticPostCardState extends ConsumerState<PlasticPostCard> {
   String address = '';
   @override
   void initState() {
-    getStreetAddress(widget.plastic.location).then((value) {
+    getStreetAddress(widget.plastic.geoFirePoint.geopoint).then((value) {
       setState(() {
         address = value;
       });
@@ -90,7 +90,7 @@ class _PlasticPostCardState extends ConsumerState<PlasticPostCard> {
                   TextButton(
                       onPressed: () {
                         getDirection(
-                            point: widget.plastic.location, address: address);
+                            point: widget.plastic.geoFirePoint.geopoint, address: address);
                       },
                       child: Text(
                         'Get Direction',

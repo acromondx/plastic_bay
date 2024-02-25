@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plastic_bay/features/plastic%20management/widgets/image_skeleton.dart';
 import 'package:plastic_bay/features/plastic%20management/widgets/picked_image.dart';
 import 'package:plastic_bay/utils/enums/plastic_type.dart';
-import 'package:plastic_bay/utils/extensions/date_format.dart';
 import 'package:plastic_bay/utils/loading_alert.dart';
 import 'package:plastic_bay/utils/reuseables.dart';
 import 'package:plastic_bay/utils/toast_message.dart';
@@ -40,8 +39,6 @@ class _CreatePostState extends ConsumerState<CreatePost> {
     setState(() {});
   }
 
-  DateTime pickUpDate = DateTime.now().add(const Duration(days: 1));
-  TimeOfDay dayTime = TimeOfDay.now();
   final descriptionController = TextEditingController();
   final quantityController = TextEditingController();
 
@@ -136,15 +133,15 @@ class _CreatePostState extends ConsumerState<CreatePost> {
                             showToastMessage(
                                 'All fields are required', context);
                           } else {
-                            postController.createPost(
+                            postController
+                                .createPost(
                               description: descriptionController.text,
                               plasticType: initialPlasticType,
                               quantity: double.parse(quantityController.text),
                               imagePath: imagePathList,
-                              pickUpDate: pickUpDate.toOrdinalDate(),
-                              pickUpTime: dayTime.format(context),
                               context: context,
-                            ).then((value){
+                            )
+                                .then((value) {
                               ref.invalidate(myPlasticPostFutureProvider);
                             });
                           }

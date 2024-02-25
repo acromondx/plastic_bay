@@ -11,4 +11,5 @@ abstract class AuthInterface {
     required String email,
     required String password,
   });
+  FutureVoid logOut();
 }

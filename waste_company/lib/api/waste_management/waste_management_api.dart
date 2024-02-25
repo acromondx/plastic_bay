@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:geoflutterfire_plus/geoflutterfire_plus.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:waste_company/api/core/fpdart.dart';
 import 'package:waste_company/api/waste_management/waste_management_interface.dart';
 import 'package:waste_company/model/plastic.dart';
@@ -16,14 +18,26 @@ class WasteManagementAPI implements WasteManagementInterface {
         _auth = auth;
   @override
   Future<List<Plastic>> getPlasticPost() async {
-    final plasticCollection = await _firestore
-        .collection('plastic_post')
-        //.orderBy('postedAt', descending: true)
-        .where('status', isEqualTo: 'pending')
-        .get();
-    return plasticCollection.docs
-        .map((e) => Plastic.fromMap(e.data()))
-        .toList();
+    final currentLocation = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    GeoPoint currentGeoPoint =
+        GeoPoint(currentLocation.latitude, currentLocation.longitude);
+
+    GeoFirePoint center = GeoFirePoint(currentGeoPoint);
+    final CollectionReference<Map<String, dynamic>> collectionReference =
+        FirebaseFirestore.instance.collection('plastic_post');
+    GeoPoint geopointFrom(Map<String, dynamic> data) {
+      return (data['geoFirePoint'] as Map<String, dynamic>)['geopoint']
+          as GeoPoint;
+    }
+
+    final plasticPost = await GeoCollectionReference(collectionReference)
+        .fetchWithin(
+            center: center,
+            radiusInKm: 24,
+            field: 'geoFirePoint',
+            geopointFrom: geopointFrom);
+    return plasticPost.map((e) => Plastic.fromMap(e.data()!)).toList();
   }
 
   @override
@@ -70,6 +84,4 @@ class WasteManagementAPI implements WasteManagementInterface {
       return left(Failure(error, stackTrace));
     }
   }
-
- 
 }

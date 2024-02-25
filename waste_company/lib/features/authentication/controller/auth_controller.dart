@@ -18,11 +18,11 @@ import '../../../model/analytics.dart';
 final authControllerProvider =
     StateNotifierProvider<AuthController, bool>((ref) {
   return AuthController(
-      authAPI: ref.watch(authApiProvider),
-      userManagementAPI: ref.watch(userManagementApiProvider),
-      messaging: ref.watch(firebaseMassagingProvider),
-      analyticsApi: ref.watch(analyticsApiProvider),
-      );
+    authAPI: ref.watch(authApiProvider),
+    userManagementAPI: ref.watch(userManagementApiProvider),
+    messaging: ref.watch(firebaseMassagingProvider),
+    analyticsApi: ref.watch(analyticsApiProvider),
+  );
 });
 
 class AuthController extends StateNotifier<bool> {
@@ -38,7 +38,7 @@ class AuthController extends StateNotifier<bool> {
   })  : _userManagementAPI = userManagementAPI,
         _authAPI = authAPI,
         _firebaseMessaging = messaging,
-        _analyticsApi=analyticsApi,
+        _analyticsApi = analyticsApi,
         super(false);
 
   void register({
@@ -73,7 +73,7 @@ class AuthController extends StateNotifier<bool> {
         state = false;
         showToastMessage(failure.error.toString(), context);
       }, (r) {
-         Analytics analytics = Analytics(
+        Analytics analytics = Analytics(
           acceptedPost: 0,
           id: user.uid,
           pendingPost: 0,
@@ -93,17 +93,28 @@ class AuthController extends StateNotifier<bool> {
     required String password,
     required BuildContext context,
   }) async {
+    state = true;
     final login = await _authAPI.login(email: email, password: password);
-    login.fold((failure) => showToastMessage(failure.error.toString(), context),
-        (userCredentials) async {
+    login.fold((failure) {
+      state = false;
+      showToastMessage(failure.error.toString(), context);
+    }, (userCredentials) async {
       final notificationToken = await _firebaseMessaging.getToken();
       final updateNotificationToken = await _userManagementAPI
           .updateCredentials(
               wasteCompanyId: userCredentials.user!.uid,
               update: {'notificationToken': notificationToken});
-      updateNotificationToken.fold(
-          (failure) => showToastMessage(failure.error.toString(), context),
-          (r) => context.goNamed(RoutePath.home));
+      updateNotificationToken.fold((failure) {
+        state = false;
+        showToastMessage(failure.error.toString(), context);
+      }, (r) {
+        state = false;
+        context.goNamed(RoutePath.home);
+      });
     });
+  }
+
+  Future<void> signOut() async {
+    await _authAPI.logOut();
   }
 }

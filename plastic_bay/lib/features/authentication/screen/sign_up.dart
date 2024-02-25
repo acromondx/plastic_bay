@@ -45,7 +45,7 @@ class _SignUpViewState extends ConsumerState<SignUpScreen> {
     }
   }
 
-  final formKey = GlobalKey<FormState>();
+ // final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +85,8 @@ class _SignUpViewState extends ConsumerState<SignUpScreen> {
             child: authControllerState
                 ? const LoadingIndicator()
                 : SingleChildScrollView(
-                    child: Form(
-                      key: formKey,
+                    // child: Form(
+                    //   key: formKey,
                       child: Column(
                         children: [
                            Text('Sign Up',
@@ -156,7 +156,7 @@ class _SignUpViewState extends ConsumerState<SignUpScreen> {
                           AuthButton(
                               title: 'Sign Up',
                               onPressed: () {
-                                if (formKey.currentState!.validate() ||
+                                if (
                                     image.isEmpty) {
                                   showToastMessage(
                                       'All fields are required', context);
@@ -189,7 +189,7 @@ class _SignUpViewState extends ConsumerState<SignUpScreen> {
                   ),
           ),
         ),
-      ),
+      
     );
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:waste_company/api/authentication/auth_interface.dart';
@@ -24,6 +23,7 @@ class AuthAPI implements AuthInterface {
       return left(Failure(error.message!, stackTrace));
     }
   }
+
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   @override
@@ -37,6 +37,16 @@ class AuthAPI implements AuthInterface {
         password: password,
       );
       return right(logIn);
+    } on FirebaseAuthException catch (error, stackTrace) {
+      return left(Failure(error.message!, stackTrace));
+    }
+  }
+
+  @override
+  FutureVoid logOut() async {
+    try {
+      final logOut = await _auth.signOut();
+      return right(logOut);
     } on FirebaseAuthException catch (error, stackTrace) {
       return left(Failure(error.message!, stackTrace));
     }

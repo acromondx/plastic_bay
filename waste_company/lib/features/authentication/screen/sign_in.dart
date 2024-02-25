@@ -28,6 +28,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
     final authControllerState = ref.watch(authControllerProvider);
     return SafeArea(
+      top: false,
       child: Scaffold(
         body: Center(
           child: Padding(
