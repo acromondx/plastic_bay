@@ -40,7 +40,7 @@
       <p>Auth</p>
     </td>
     <td>
-      <img src="https://github.com/acromondx/plastic_bay/blob/main/screenshots/company/analytics.png" />
+      <img src="https://github.com/acromondx/plastic_bay/blob/main/screenshots/company/home-screen.png" />
                <p>Home screen</p>
  </td>    <td>
       <img src="https://github.com/acromondx/plastic_bay/blob/main/screenshots/company/completed.png" />
